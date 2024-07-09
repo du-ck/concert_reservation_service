@@ -1,0 +1,63 @@
+2024-07-09 05:34:29.452883+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO [*]user (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com')"; expected "identifier"; SQL statement:
+INSERT INTO user (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com') [42001-224]
+2024-07-09 05:34:29.455885+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO [*]user (name, phone, email) VALUES ('Bob', '098-765-4321', 'bob@example.com')"; expected "identifier"; SQL statement:
+INSERT INTO user (name, phone, email) VALUES ('Bob', '098-765-4321', 'bob@example.com') [42001-224]
+2024-07-09 05:35:21.922882+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO [*]user (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com')"; expected "identifier"; SQL statement:
+INSERT INTO user (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com') [42001-224]
+2024-07-09 05:37:14.016524+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO [*]user (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com')"; expected "identifier"; SQL statement:
+INSERT INTO user (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com') [42001-224]
+2024-07-09 05:37:14.017523+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO [*]user (name, phone, email) VALUES ('Bob', '098-765-4321', 'bob@example.com')"; expected "identifier"; SQL statement:
+INSERT INTO user (name, phone, email) VALUES ('Bob', '098-765-4321', 'bob@example.com') [42001-224]
+2024-07-09 05:37:40.854910+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "user" not found (candidates are: "USER"); SQL statement:
+INSERT INTO "user" (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com') [42103-224]
+2024-07-09 05:37:40.855910+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "user" not found (candidates are: "USER"); SQL statement:
+INSERT INTO "user" (name, phone, email) VALUES ('Bob', '098-765-4321', 'bob@example.com') [42103-224]
+2024-07-09 05:37:52.902894+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "user" not found (candidates are: "USER"); SQL statement:
+INSERT INTO "user" (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com') [42103-224]
+2024-07-09 05:37:52.902894+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "user" not found (candidates are: "USER"); SQL statement:
+INSERT INTO "user" (name, phone, email) VALUES ('Bob', '098-765-4321', 'bob@example.com') [42103-224]
+2024-07-09 05:39:38.534903+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO [*]user (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com')"; expected "identifier"; SQL statement:
+INSERT INTO user (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com') [42001-224]
+2024-07-09 05:39:38.537903+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO [*]user (name, phone, email) VALUES ('Bob', '098-765-4321', 'bob@example.com')"; expected "identifier"; SQL statement:
+INSERT INTO user (name, phone, email) VALUES ('Bob', '098-765-4321', 'bob@example.com') [42001-224]
+2024-07-09 05:39:51.565879+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO [*][user] (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com')"; expected "identifier"; SQL statement:
+INSERT INTO [user] (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com') [42001-224]
+2024-07-09 05:39:51.566878+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO [*][user] (name, phone, email) VALUES ('Bob', '098-765-4321', 'bob@example.com')"; expected "identifier"; SQL statement:
+INSERT INTO [user] (name, phone, email) VALUES ('Bob', '098-765-4321', 'bob@example.com') [42001-224]
+2024-07-09 05:42:00.433881+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO [*]USER (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com')"; expected "identifier"; SQL statement:
+INSERT INTO USER (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com') [42001-224]
+2024-07-09 05:42:00.434882+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO [*]USER (name, phone, email) VALUES ('Bob', '098-765-4321', 'bob@example.com')"; expected "identifier"; SQL statement:
+INSERT INTO USER (name, phone, email) VALUES ('Bob', '098-765-4321', 'bob@example.com') [42001-224]
+2024-07-09 05:42:05.095880+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO [*]'USER' (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com')"; expected "identifier"; SQL statement:
+INSERT INTO 'USER' (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com') [42001-224]
+2024-07-09 05:42:05.096880+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO [*]USER (name, phone, email) VALUES ('Bob', '098-765-4321', 'bob@example.com')"; expected "identifier"; SQL statement:
+INSERT INTO USER (name, phone, email) VALUES ('Bob', '098-765-4321', 'bob@example.com') [42001-224]
+2024-07-09 05:46:04.231357+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "user" not found (candidates are: "USER"); SQL statement:
+INSERT INTO "user" (name, phone, email) VALUES ('Alice', '123-456-7890', 'alice@example.com') [42103-224]
+2024-07-09 05:46:04.231357+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "user" not found (candidates are: "USER"); SQL statement:
+INSERT INTO "user" (name, phone, email) VALUES ('Bob', '098-765-4321', 'bob@example.com') [42103-224]
+2024-07-09 05:46:18.187905+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DROP TABLE [*]USER"; expected "identifier"; SQL statement:
+DROP TABLE USER [42001-224]
+2024-07-09 05:46:22.105878+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DROP TABLE [*]'USER'"; expected "identifier"; SQL statement:
+DROP TABLE 'USER' [42001-224]
