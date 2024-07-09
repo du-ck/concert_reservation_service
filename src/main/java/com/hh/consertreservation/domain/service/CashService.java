@@ -29,6 +29,13 @@ public class CashService {
 
     @Transactional
     public Optional<UserBalance> charge(long userId, long amount) throws Exception {
+        UserBalance userBalance = getUserBalance(userId).get();
+        userBalance.charge(amount);
+
+        Optional<UserBalance> balance = userBalanceRepository.save(userBalance);
+        if (balance.isPresent()) {
+            return balance;
+        }
         return Optional.empty();
     }
 

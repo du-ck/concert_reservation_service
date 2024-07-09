@@ -68,4 +68,42 @@ class CashServiceTest {
         Assertions.assertEquals("유저를 찾을 수 없습니다", exception.getMessage());
     }
 
+    @Test
+    void 잔액충전() throws Exception {
+        long amount = 10000L;
+        UserBalance balance = UserBalance.builder()
+                .userId(userId)
+                .balance(10000L)
+                .updatedAt(LocalDateTime.now()).build();
+
+        given(userBalanceRepository.findByUserId(userId))
+                .willReturn(Optional.of(balance));
+
+        given(userBalanceRepository.save(balance))
+                .willReturn(Optional.of(balance));
+
+        Optional<UserBalance> result = cashService.charge(userId, amount);
+
+        Assertions.assertEquals(userId, result.get().getUserId());
+        Assertions.assertEquals(20000L, result.get().getBalance());
+    }
+
+    @Test
+    void 잔액충전_0이하() {
+        long amount = -10000L;
+
+        UserBalance balance = UserBalance.builder()
+                .userId(userId)
+                .balance(10000L)
+                .updatedAt(LocalDateTime.now()).build();
+
+        given(userBalanceRepository.findByUserId(userId))
+                .willReturn(Optional.of(balance));
+
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class,
+                () -> cashService.charge(userId, amount));
+
+        Assertions.assertEquals("충전할 금액은 0보다 커야 합니다", exception.getMessage());
+    }
+
 }

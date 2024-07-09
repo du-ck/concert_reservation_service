@@ -49,7 +49,16 @@ public class CashController {
      */
     @PatchMapping("/charge")
     public ResponseEntity<ResponseData> charge(@RequestBody Charge.Request req) throws Exception {
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        Optional<UserBalance> balance = cashService.charge(req.getUserId(), req.getAmount());
+
+        Balance.Response response = Balance.Response.builder()
+                .balance(balance.get())
+                .build();
+        return new ResponseEntity<>(ResponseData.builder()
+                .isSuccess(true)
+                .code("200")
+                .data(response)
+                .build(), HttpStatus.OK);
     }
 
     /**
