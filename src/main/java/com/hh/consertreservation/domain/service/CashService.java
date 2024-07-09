@@ -20,7 +20,11 @@ public class CashService {
     private final UserBalanceRepository userBalanceRepository;
 
     public Optional<UserBalance> getUserBalance(long userId) throws Exception {
-        return Optional.empty();
+        Optional<UserBalance> result = userBalanceRepository.findByUserId(userId);
+        if (!result.isPresent()) {
+            throw new ResourceNotFoundException("유저를 찾을 수 없습니다");
+        }
+        return result;
     }
 
     @Transactional

@@ -29,7 +29,17 @@ public class CashController {
      */
     @GetMapping("/balance")
     public ResponseEntity<ResponseData> balance(Balance.Request req) throws Exception {
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        Optional<UserBalance> userBalance = cashService.getUserBalance(req.getUserId());
+
+        Balance.Response response = Balance.Response.builder()
+                .balance(userBalance.get())
+                .build();
+
+        return new ResponseEntity<>(ResponseData.builder()
+                .isSuccess(true)
+                .code("200")
+                .data(response)
+                .build(), HttpStatus.OK);
     }
 
     /**

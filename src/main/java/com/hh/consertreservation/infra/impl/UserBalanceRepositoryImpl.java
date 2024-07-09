@@ -14,4 +14,13 @@ import java.util.Optional;
 public class UserBalanceRepositoryImpl implements UserBalanceRepository {
 
     private final UserBalanceJpaRepository jpaRepository;
+
+    @Override
+    public Optional<UserBalance> findByUserId(long userId) {
+        Optional<UserBalanceEntity> entity = jpaRepository.findByUserId(userId);
+        if (entity.isPresent()) {
+            return Optional.of(UserBalanceEntity.toDomain(entity.get()));
+        }
+        return Optional.empty();
+    }
 }
