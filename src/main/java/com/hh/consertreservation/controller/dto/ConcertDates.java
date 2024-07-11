@@ -1,18 +1,17 @@
 package com.hh.consertreservation.controller.dto;
 
 import com.hh.consertreservation.domain.dto.Concert;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.extern.jackson.Jacksonized;
 
 import java.util.List;
 
 public class ConcertDates {
-    @Builder
+    @Setter
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Jacksonized
     public static class Request {
         private Long concertId;
     }
@@ -20,6 +19,6 @@ public class ConcertDates {
     @Builder
     @Getter
     public static class Response {
-        List<Concert> concerts;
+        Concert concerts;
     }
 }

@@ -39,24 +39,25 @@ class ConcertControllerTest {
     @Test
     void concertDates() throws Exception {
 
-        ConcertDates.Request req = ConcertDates.Request.builder()
-                        .concertId(100L).build();
+        ConcertDates.Request req = new ConcertDates.Request();
+        req.setConcertId(100L);
 
         given(concertService.getDates(req.getConcertId()))
-                .willReturn(Optional.of(Concert.getMockListData()));
+                .willReturn(Concert.getMockListData());
 
         mockMvc.perform(get("/concert/dates")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Queue-Token", "tokenTest"))
+                        .header("Queue-Token", "tokenTest")
+                        .param("concertId", String.valueOf(req.getConcertId())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").exists())
                 .andExpect(jsonPath("$.data.concerts").exists())
-                .andExpect(jsonPath("$.data.concerts[*].concertId").exists())
-                .andExpect(jsonPath("$.data.concerts[*].title").exists())
-                .andExpect(jsonPath("$.data.concerts[*].concertDate").exists())
-                .andExpect(jsonPath("$.data.concerts[*].description").exists())
-                .andExpect(jsonPath("$.data.concerts[*].price").exists())
-                .andExpect(jsonPath("$.data.concerts[*].seats").exists());
+                .andExpect(jsonPath("$.data.concerts.concertId").exists())
+                .andExpect(jsonPath("$.data.concerts.schedules[*].title").exists())
+                .andExpect(jsonPath("$.data.concerts.schedules[*].concertDate").exists())
+                .andExpect(jsonPath("$.data.concerts.schedules[*].description").exists())
+                .andExpect(jsonPath("$.data.concerts.schedules[*].price").exists())
+                .andExpect(jsonPath("$.data.concerts.schedules[*].seats").exists());
     }
 
     @Test
@@ -67,7 +68,7 @@ class ConcertControllerTest {
                 .build();
 
         given(concertService.getSeats(req.getConcertId(), req.getConcertDateTime()))
-                .willReturn(Optional.of(Seat.getMockListData()));
+                .willReturn(Seat.getMockListData());
 
         mockMvc.perform(get("/concert/seats")
                         .contentType(MediaType.APPLICATION_JSON)
