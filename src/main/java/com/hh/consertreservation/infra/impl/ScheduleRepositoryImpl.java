@@ -31,4 +31,13 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         }
         return Optional.empty();
     }
+
+    @Override
+    public Optional<ConcertSchedule> findById(long scheduleId) {
+        Optional<ScheduleEntity> scheduleEntity = jpaRepository.findById(scheduleId);
+        if (scheduleEntity.isPresent()) {
+            return Optional.of(ScheduleEntity.toDomain(scheduleEntity.get()));
+        }
+        return Optional.empty();
+    }
 }

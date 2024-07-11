@@ -1,5 +1,7 @@
 package com.hh.consertreservation.controller;
 
+import com.hh.consertreservation.application.facade.CashFacade;
+import com.hh.consertreservation.application.facade.TokenFacade;
 import com.hh.consertreservation.controller.dto.Balance;
 import com.hh.consertreservation.controller.dto.Charge;
 import com.hh.consertreservation.controller.dto.Payment;
@@ -20,7 +22,8 @@ import java.util.Optional;
 @RequestMapping("/cash")
 public class CashController {
 
-    private final CashService cashService;
+    private final CashFacade cashFacade;
+    private final TokenFacade tokenFacade;
 
     /**
      * 잔액 조회 API
@@ -29,7 +32,7 @@ public class CashController {
      */
     @GetMapping("/balance")
     public ResponseEntity<ResponseData> balance(Balance.Request req) throws Exception {
-        Optional<UserBalance> userBalance = cashService.getUserBalance(req.getUserId());
+        Optional<UserBalance> userBalance = cashFacade.getUserBalance(req.getUserId());
 
         Balance.Response response = Balance.Response.builder()
                 .balance(userBalance.get())
@@ -49,7 +52,7 @@ public class CashController {
      */
     @PatchMapping("/charge")
     public ResponseEntity<ResponseData> charge(@RequestBody Charge.Request req) throws Exception {
-        Optional<UserBalance> balance = cashService.charge(req.getUserId(), req.getAmount());
+        Optional<UserBalance> balance = cashFacade.charge(req.getUserId(), req.getAmount());
 
         Balance.Response response = Balance.Response.builder()
                 .balance(balance.get())
@@ -68,7 +71,21 @@ public class CashController {
     @PostMapping("/payment")
     public ResponseEntity<ResponseData> payment(
             @RequestBody Payment.Request req,
-            @RequestHeader("Queue-Token") String queueToken) {
-        return new ResponseEntity<>(null, HttpStatus.OK);
+            @RequestHeader("Queue-Token") String queueToken) throws Exception {
+
+        //토큰 검증
+        tokenFacade.verification(req.getUserId(), queueToken);
+
+        Optional<ReservationInfo> reservation = cashFacade.payment(Payment.toServiceRequestDto(req, queueToken));
+
+        Payment.Response response = Payment.Response.builder()
+                .reservation(reservation.get())
+                .build();
+
+        return new ResponseEntity<>(ResponseData.builder()
+                .isSuccess(true)
+                .code("200")
+                .data(response)
+                .build(), HttpStatus.OK);
     }
 }

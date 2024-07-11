@@ -34,6 +34,7 @@ public class ConcertService {
         return new ArrayList<>();
     }
 
+    @Transactional
     public Optional<Seat> reservation(long scheduleId, long seatNumber) throws Exception {
         Optional<Seat> seatForReservation = seatRepository.getSeatForReservation(scheduleId, seatNumber);
         if (!seatForReservation.isPresent()) {
@@ -54,5 +55,21 @@ public class ConcertService {
     @Transactional
     public void setEmptySeat() {
         seatRepository.setSeatStatusEmpty();
+    }
+
+    public Optional<Seat> getSeatWithId(long seatId) {
+        return seatRepository.findById(seatId);
+    }
+
+    public Optional<ConcertSchedule> getScheduleWithId(long scheduleId) {
+        return scheduleRepository.findById(scheduleId);
+    }
+
+    public Optional<Seat> setReservedSeat(long seatId) {
+        Optional<Seat> reservedSeat = seatRepository.setSeatReserved(seatId);
+        if (!reservedSeat.isPresent()) {
+            throw new IllegalStateException("좌석 배정처리 실패");
+        }
+        return reservedSeat;
     }
 }

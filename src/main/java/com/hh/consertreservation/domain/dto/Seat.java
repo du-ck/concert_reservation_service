@@ -1,6 +1,8 @@
 package com.hh.consertreservation.domain.dto;
 
 import com.hh.consertreservation.domain.dto.types.SeatType;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,11 +17,17 @@ public class Seat {
     private Long scheduleId;
     private Long seatNumber;
     private SeatType status;
+
     private ConcertSchedule schedule;
     private LocalDateTime updatedAt;
 
     public void reservation() {
         this.status = SeatType.TEMPORARILY;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void paymentSeat() {
+        this.status = SeatType.RESERVED;
         this.updatedAt = LocalDateTime.now();
     }
 

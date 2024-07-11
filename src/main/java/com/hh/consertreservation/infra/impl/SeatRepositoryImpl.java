@@ -46,4 +46,33 @@ public class SeatRepositoryImpl implements SeatRepository {
     public void setSeatStatusEmpty() {
         jpaRepository.setEmptyForTempSeat(LocalDateTime.now().minusMinutes(5));
     }
+
+    @Override
+    public Optional<Seat> findById(long seatId) {
+        Optional<SeatEntity> seatEntity = jpaRepository.findById(seatId);
+        if (seatEntity.isPresent()) {
+            return Optional.of(SeatEntity.toDomain(seatEntity.get()));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Seat> setSeatReserved(long seatId) {
+        Optional<SeatEntity> seatEntity = jpaRepository.findById(seatId);
+
+        if (seatEntity.isPresent()) {
+
+            SeatEntity saveEnitity = seatEntity.get();
+            saveEnitity = saveEnitity.toBuilder()
+                    .status(SeatType.RESERVED)
+                    .updatedAt(LocalDateTime.now())
+                    .build();
+
+            Optional<SeatEntity> result = Optional.of(jpaRepository.save(saveEnitity));
+            if (result.isPresent()) {
+                return Optional.of(SeatEntity.toDomain(result.get()));
+            }
+        }
+        return Optional.empty();
+    }
 }

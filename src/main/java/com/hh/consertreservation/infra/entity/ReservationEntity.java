@@ -1,5 +1,9 @@
 package com.hh.consertreservation.infra.entity;
 
+import com.hh.consertreservation.domain.dto.ConcertSchedule;
+import com.hh.consertreservation.domain.dto.ReservationInfo;
+import com.hh.consertreservation.domain.dto.Seat;
+import com.hh.consertreservation.domain.dto.User;
 import com.hh.consertreservation.domain.dto.types.ReservationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -48,4 +52,38 @@ public class ReservationEntity {
     @Column(length = 15, nullable = false)
     @Enumerated(EnumType.STRING)
     private ReservationType status;
+
+    public static ReservationEntity toEntity(ReservationInfo domain) {
+        return ReservationEntity.builder()
+                .concertId(domain.getConcertSchedule().getConcertId())
+                .concertTitle(domain.getConcertSchedule().getTitle())
+                .seatId(domain.getSeat().getId())
+                .seatNumber(domain.getSeat().getSeatNumber())
+                .userId(domain.getUser().getId())
+                .name(domain.getUser().getUserName())
+                .createdAt(domain.getCreatedAt())
+                .updatedAt(domain.getCreatedAt())
+                .status(domain.getStatus())
+                .build();
+    }
+
+    public static ReservationInfo toDomain(ReservationEntity entity) {
+        return ReservationInfo.builder()
+                .reservationId(entity.getId())
+                .user(User.builder()
+                        .id(entity.getUserId())
+                        .userName(entity.getName())
+                        .build())
+                .concertSchedule(ConcertSchedule.builder()
+                        .concertId(entity.getConcertId())
+                        .title(entity.getConcertTitle())
+                        .build())
+                .seat(Seat.builder()
+                        .id(entity.getSeatId())
+                        .seatNumber(entity.getSeatNumber())
+                        .build())
+                .createdAt(entity.getCreatedAt())
+                .status(entity.getStatus())
+                .build();
+    }
 }

@@ -81,4 +81,13 @@ public class WaitingService {
         }
         return true;
     }
+
+    @Transactional
+    public int expireAfterPayment(long userId, String token) throws Exception {
+        int expireTokenCount = waitingRepository.expireTokenById(userId, token);
+        if (expireTokenCount == 0) {
+            throw new TokenVerificationException("토큰만료 실패");
+        }
+        return expireTokenCount;
+    }
 }

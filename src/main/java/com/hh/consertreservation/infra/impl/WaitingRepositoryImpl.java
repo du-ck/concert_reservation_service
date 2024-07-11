@@ -73,4 +73,12 @@ public class WaitingRepositoryImpl implements WaitingRepository {
         }
         return Optional.empty();
     }
+
+    @Override
+    public int expireTokenById(long userId, String token) {
+
+        int expireCount = jpaRepository.expireTokenById(userId, token);
+
+        return expireCount;
+    }
 }

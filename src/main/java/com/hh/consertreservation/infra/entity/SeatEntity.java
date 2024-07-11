@@ -13,7 +13,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "seat")
@@ -47,7 +47,7 @@ public class SeatEntity {
                 .seatNumber(entity.getSeatNumber())
                 .status(entity.getStatus())
                 .updatedAt(entity.getUpdatedAt())
-                .schedule(ScheduleEntity.toDomain(entity.scheduleEntity))
+                .schedule(ScheduleEntity.toDomain(entity.getScheduleEntity()))
                 .build();
     }
 

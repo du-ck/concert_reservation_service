@@ -14,4 +14,6 @@ public interface SeatRepository {
     Optional<Seat> save(Seat seat);
 
     void setSeatStatusEmpty();
+    Optional<Seat> findById(long seatId);
+    Optional<Seat> setSeatReserved(long seatId);
 }

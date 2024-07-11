@@ -26,4 +26,11 @@ public interface WaitingJpaRepository extends JpaRepository<WaitingEntity, Long>
     List<WaitingEntity> findWaitingWithLimit(@Param("limit") int limit);
 
     Optional<WaitingEntity> findByUserIdAndTokenAndStatus(long userId, String token, WaitingType status);
+
+    @Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE WaitingEntity w SET w.status = 'EXPIRE' " +
+            "where w.userId = :userId " +
+            "and w.token = :token " +
+            "and w.status = 'ONGOING' ")
+    int expireTokenById(@Param("userId")long userId, @Param("token") String token);
 }

@@ -5,6 +5,7 @@ import com.hh.consertreservation.domain.dto.Seat;
 import com.hh.consertreservation.domain.service.ConcertService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;

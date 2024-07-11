@@ -1,12 +1,13 @@
 package com.hh.consertreservation.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hh.consertreservation.application.facade.CashFacade;
+import com.hh.consertreservation.application.facade.ConcertFacade;
+import com.hh.consertreservation.application.facade.TokenFacade;
+import com.hh.consertreservation.application.facade.dto.PaymentFacadeRequestDto;
 import com.hh.consertreservation.controller.dto.Charge;
 import com.hh.consertreservation.controller.dto.Payment;
-import com.hh.consertreservation.domain.dto.ReservationInfo;
-import com.hh.consertreservation.domain.dto.User;
-import com.hh.consertreservation.domain.dto.UserBalance;
-import com.hh.consertreservation.domain.dto.servicerequest.PaymentServiceRequestDto;
+import com.hh.consertreservation.domain.dto.*;
 import com.hh.consertreservation.domain.service.CashService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,13 @@ class CashControllerTest {
     private ObjectMapper objMapper;
 
     @MockBean
-    CashService cashService;
+    private CashService cashService;
+
+    @MockBean
+    private CashFacade cashFacade;
+
+    @MockBean
+    private TokenFacade tokenFacade;
 
 
     /**
@@ -43,7 +50,7 @@ class CashControllerTest {
         UserBalance userBalance = UserBalance.builder().build();
         userBalance.setMockData();
 
-        given(cashService.getUserBalance(1L)).willReturn(Optional.of(userBalance));
+        given(cashFacade.getUserBalance(1L)).willReturn(Optional.of(userBalance));
 
         mockMvc.perform(get("/cash/balance")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -69,7 +76,7 @@ class CashControllerTest {
 
         Charge.Request req = new Charge.Request(userBalance.getUserId(), chargeAmount);
 
-        given(cashService.charge(req.getUserId(), req.getAmount()))
+        given(cashFacade.charge(req.getUserId(), req.getAmount()))
                 .willReturn(Optional.of(userBalance));
         mockMvc.perform(patch("/cash/charge")
                         .content(objMapper.writeValueAsString(req))
@@ -92,14 +99,12 @@ class CashControllerTest {
         ReservationInfo reservationInfo = ReservationInfo.builder().build();
         reservationInfo.setMockData();
 
-        /*Payment.Request req = Payment.Request.builder()
-                .userId(user.getId())
-                .concertId(reservationInfo.getConcert().getConcertId())
-                .seatNo(reservationInfo.getSeat().getSeatNumber())
-                .concertDateTime(reservationInfo.getConcert().getSchedules().getConcertDate())
-                .build();
+        Payment.Request req = new Payment.Request();
+        req.setUserId(user.getId());
+        req.setSeatId(3L);
+        req.setScheduleId(1L);
 
-        given(cashService.payment(any(PaymentServiceRequestDto.class)))
+        given(cashFacade.payment(any(PaymentFacadeRequestDto.class)))
                 .willReturn(Optional.of(reservationInfo));
 
         mockMvc.perform(post("/cash/payment")
@@ -108,9 +113,9 @@ class CashControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").exists())
-                .andExpect(jsonPath("$.data.user").exists())
                 .andExpect(jsonPath("$.data.reservation").exists())
-                .andExpect(jsonPath("$.data.reservation.seat").exists())
-                .andExpect(jsonPath("$.data.user.balance").exists());*/
+                .andExpect(jsonPath("$.data.reservation.reservationId").exists())
+                .andExpect(jsonPath("$.data.reservation.status").exists())
+                .andExpect(jsonPath("$.data.reservation.seat").exists());
     }
 }

@@ -25,5 +25,5 @@ public interface SeatJpaRepository extends JpaRepository<SeatEntity, Long> {
     @Query(value = "update SeatEntity s set s.status = 'EMPTY' " +
             "where s.updatedAt < :expireDateTime " +
             "and s.status = 'TEMPORARILY' ")
-    void setEmptyForTempSeat(@Param("expireDateTime")LocalDateTime expireDateTime);
+    int setEmptyForTempSeat(@Param("expireDateTime")LocalDateTime expireDateTime);
 }

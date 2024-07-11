@@ -1,6 +1,7 @@
 package com.hh.consertreservation.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hh.consertreservation.application.facade.TokenFacade;
 import com.hh.consertreservation.controller.dto.TokenIssued;
 import com.hh.consertreservation.domain.dto.Token;
 import com.hh.consertreservation.domain.service.WaitingService;
@@ -32,6 +33,9 @@ class WaitingControllerTest {
     @MockBean
     private WaitingService waitingService;
 
+    @MockBean
+    private TokenFacade tokenFacade;
+
     @Test
     void tokenIssued() throws Exception {
         TokenIssued.Request req = TokenIssued.Request.builder()
@@ -39,7 +43,7 @@ class WaitingControllerTest {
                 .build();
         Token token = Token.builder().build();
         token.setMockData();
-        given(waitingService.issued(req.getUserId(), anyInt())).willReturn(Optional.of(token));
+        given(tokenFacade.issued(req.getUserId(), 500)).willReturn(Optional.of(token));
 
         mockMvc.perform(post("/token/issued")
                         .contentType(MediaType.APPLICATION_JSON)

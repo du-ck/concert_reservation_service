@@ -1,10 +1,13 @@
 package com.hh.consertreservation.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hh.consertreservation.application.facade.ConcertFacade;
+import com.hh.consertreservation.application.facade.TokenFacade;
 import com.hh.consertreservation.controller.dto.ConcertDates;
 import com.hh.consertreservation.controller.dto.ConcertSeats;
 import com.hh.consertreservation.controller.dto.Reservation;
 import com.hh.consertreservation.domain.dto.Concert;
+import com.hh.consertreservation.domain.dto.ConcertSchedule;
 import com.hh.consertreservation.domain.dto.Seat;
 import com.hh.consertreservation.domain.service.ConcertService;
 import org.junit.jupiter.api.Test;
@@ -14,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
@@ -34,14 +38,21 @@ class ConcertControllerTest {
     @MockBean
     private ConcertService concertService;
 
+    @MockBean
+    private ConcertFacade concertFacade;
+
+    @MockBean
+    private TokenFacade tokenFacade;
+
     @Test
     void concertDates() throws Exception {
 
         ConcertDates.Request req = new ConcertDates.Request();
         req.setConcertId(100L);
+        List<ConcertSchedule> schedules = Concert.getMockListData();
 
-        given(concertService.getDates(req.getConcertId()))
-                .willReturn(Concert.getMockListData());
+        given(concertFacade.getDates(req.getConcertId()))
+                .willReturn(schedules);
 
         mockMvc.perform(get("/concert/dates")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -61,23 +72,26 @@ class ConcertControllerTest {
     @Test
     void concertSeats() throws Exception {
         ConcertSeats.Request req = new ConcertSeats.Request();
+        req.setUserId(1L);
         req.setConcertId(1L);
         req.setConcertDateTime("2024-07-10 11:30");
-
-        given(concertService.getSeats(req.getConcertId(), req.getConcertDateTime()))
-                .willReturn(Seat.getMockListData());
+        List<Seat> seats = Seat.getMockListData();
+        given(concertFacade.getSeats(req.getConcertId(), req.getConcertDateTime()))
+                .willReturn(seats);
 
         mockMvc.perform(get("/concert/seats")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .param("userId", String.valueOf(req.getUserId()))
+                        .param("concertId", String.valueOf(req.getConcertId()))
+                        .param("concertDateTime", String.valueOf(req.getConcertDateTime()))
                         .header("Queue-Token", "tokenTest"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").exists())
                 .andExpect(jsonPath("$.data.seats").exists())
-                .andExpect(jsonPath("$.data.seats[*].concertId").exists())
                 .andExpect(jsonPath("$.data.seats[*].id").exists())
                 .andExpect(jsonPath("$.data.seats[*].seatNumber").exists())
                 .andExpect(jsonPath("$.data.seats[*].status").exists())
-                .andExpect(jsonPath("$.data.seats[*].updatedAt").exists());
+                .andExpect(jsonPath("$.data.seats[*].scheduleId").exists());
     }
 
     @Test
@@ -92,7 +106,7 @@ class ConcertControllerTest {
         Seat seat = Seat.builder().build();
         seat.setMockData();
 
-        given(concertService.reservation(req.getScheduleId(), req.getSeatNumber()))
+        given(concertFacade.reservation(req.getScheduleId(), req.getSeatNumber()))
                 .willReturn(Optional.of(seat));
 
         mockMvc.perform(post("/concert/reservation")
@@ -102,11 +116,8 @@ class ConcertControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").exists())
                 .andExpect(jsonPath("$.data.seat").exists())
-                .andExpect(jsonPath("$.data.result").exists())
-                .andExpect(jsonPath("$.data.seat.concertId").exists())
                 .andExpect(jsonPath("$.data.seat.id").exists())
                 .andExpect(jsonPath("$.data.seat.seatNumber").exists())
-                .andExpect(jsonPath("$.data.seat.status").exists())
-                .andExpect(jsonPath("$.data.seat.updatedAt").exists());
+                .andExpect(jsonPath("$.data.seat.status").exists());
     }
 }

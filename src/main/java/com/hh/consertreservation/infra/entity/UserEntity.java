@@ -37,6 +37,7 @@ public class UserEntity {
                 .id(entity.getId())
                 .userName(entity.getName())
                 .userName(entity.getName())
+                .phone(entity.getPhone())
                 .email(entity.getEmail())
                 .balance(UserBalanceEntity.toDomain(entity.getUserBalanceEntity()))
                 .build();
