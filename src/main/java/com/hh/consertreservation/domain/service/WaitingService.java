@@ -4,6 +4,7 @@ import com.hh.consertreservation.domain.dto.Token;
 import com.hh.consertreservation.domain.dto.types.WaitingType;
 import com.hh.consertreservation.domain.repository.WaitingRepository;
 import com.hh.consertreservation.exception.TokenIssuedException;
+import com.hh.consertreservation.exception.TokenVerificationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -71,5 +72,13 @@ public class WaitingService {
             }
         }
         return nextWaitingId;
+    }
+
+    public boolean verification(long userId, String token) throws Exception {
+        Optional<Token> ongoingToken = waitingRepository.getOngoingToken(userId, token);
+        if (!ongoingToken.isPresent()) {
+            throw new TokenVerificationException("토큰인증 실패");
+        }
+        return true;
     }
 }

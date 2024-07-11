@@ -13,4 +13,6 @@ public interface WaitingRepository {
     int getOnGoingCount();
     List<Token> getNextWaiting(int limit);
     int updateTokenOngoing(List<Token> waitingTokens);
+
+    Optional<Token> getOngoingToken(long userId, String token);
 }

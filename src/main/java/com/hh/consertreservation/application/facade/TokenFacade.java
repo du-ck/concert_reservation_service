@@ -27,4 +27,8 @@ public class TokenFacade {
         }
         return waitingService.issued(userId, maximum_ongoing_count);
     }
+
+    public boolean verification(long userId, String token) throws Exception {
+        return waitingService.verification(userId, token);
+    }
 }

@@ -23,7 +23,7 @@ public class WaitingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 36, nullable = false)
     private String token;
 
     @Column(name = "user_id", nullable = false)

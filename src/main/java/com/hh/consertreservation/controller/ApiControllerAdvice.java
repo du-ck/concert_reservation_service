@@ -3,6 +3,7 @@ package com.hh.consertreservation.controller;
 import com.hh.consertreservation.controller.dto.data.ErrorResponse;
 import com.hh.consertreservation.exception.ResourceNotFoundException;
 import com.hh.consertreservation.exception.TokenIssuedException;
+import com.hh.consertreservation.exception.TokenVerificationException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,12 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(value = TokenIssuedException.class)
     public ResponseEntity<ErrorResponse> handleTokenIssuedException(TokenIssuedException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.status(400).body(new ErrorResponse(false, "400", e.getMessage()));
+    }
+
+    @ExceptionHandler(value = TokenVerificationException.class)
+    public ResponseEntity<ErrorResponse> handleTokenVerificationException(TokenVerificationException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(400).body(new ErrorResponse(false, "400", e.getMessage()));
     }

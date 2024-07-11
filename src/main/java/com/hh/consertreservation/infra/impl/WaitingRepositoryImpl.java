@@ -64,4 +64,13 @@ public class WaitingRepositoryImpl implements WaitingRepository {
         List<WaitingEntity> saveResult = jpaRepository.saveAll(WaitingEntity.toEntityList(waitingTokens));
         return saveResult.size();
     }
+
+    @Override
+    public Optional<Token> getOngoingToken(long userId, String token) {
+        Optional<WaitingEntity> entity = jpaRepository.findByUserIdAndTokenAndStatus(userId, token, WaitingType.ONGOING);
+        if (entity.isPresent()) {
+            return Optional.of(WaitingEntity.toDomain(entity.get()));
+        }
+        return Optional.empty();
+    }
 }

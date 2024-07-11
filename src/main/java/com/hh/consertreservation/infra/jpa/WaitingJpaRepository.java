@@ -24,4 +24,6 @@ public interface WaitingJpaRepository extends JpaRepository<WaitingEntity, Long>
 
     @Query(value = "SELECT * FROM waiting where status = 'WAITING' ORDER BY id ASC LIMIT :limit", nativeQuery = true)
     List<WaitingEntity> findWaitingWithLimit(@Param("limit") int limit);
+
+    Optional<WaitingEntity> findByUserIdAndTokenAndStatus(long userId, String token, WaitingType status);
 }

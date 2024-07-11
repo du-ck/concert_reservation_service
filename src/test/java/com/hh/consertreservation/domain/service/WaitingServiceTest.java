@@ -7,6 +7,7 @@ import com.hh.consertreservation.domain.repository.UserRepository;
 import com.hh.consertreservation.domain.repository.WaitingRepository;
 import com.hh.consertreservation.exception.ResourceNotFoundException;
 import com.hh.consertreservation.exception.TokenIssuedException;
+import com.hh.consertreservation.exception.TokenVerificationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -74,5 +75,43 @@ class WaitingServiceTest {
                 () -> waitingService.issued(userId, max_ongoing_count));
 
         Assertions.assertEquals("토큰 발급 실패", exception.getMessage());
+    }
+
+    @Test
+    void 토큰인증() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        Token token = Token.builder()
+                .id(1L)
+                .userId(userId)
+                .queueToken(uuid.toString())
+                .createdAt(LocalDateTime.now())
+                .expiresAt(LocalDateTime.now().plusMinutes(5))
+                .status(WaitingType.ONGOING)
+                .build();
+        given(waitingRepository.getOngoingToken(userId, uuid.toString()))
+                .willReturn(Optional.of(token));
+
+        boolean result = waitingService.verification(userId, uuid.toString());
+
+        Assertions.assertEquals(result, true);
+    }
+
+    @Test
+    void 토큰인증_실패() {
+        UUID uuid = UUID.randomUUID();
+        Token token = Token.builder()
+                .id(1L)
+                .userId(userId)
+                .queueToken(uuid.toString())
+                .createdAt(LocalDateTime.now())
+                .expiresAt(LocalDateTime.now().plusMinutes(5))
+                .status(WaitingType.ONGOING)
+                .build();
+        given(waitingRepository.getOngoingToken(userId, uuid.toString()))
+                .willReturn(Optional.empty());
+
+        Exception exception = Assertions.assertThrows(TokenVerificationException.class,
+                () -> waitingService.verification(userId, uuid.toString()));
+        Assertions.assertEquals("토큰인증 실패", exception.getMessage());
     }
 }
