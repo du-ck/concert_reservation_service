@@ -10,6 +10,7 @@ import com.hh.consertreservation.domain.dto.ReservationInfo;
 import com.hh.consertreservation.domain.dto.User;
 import com.hh.consertreservation.domain.dto.UserBalance;
 import com.hh.consertreservation.domain.service.CashService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ public class CashController {
      * @return
      */
     @GetMapping("/balance")
+    @Operation(summary = "잔액 조회", description = "사용자의 잔액을 조회한다.")
     public ResponseEntity<ResponseData> balance(Balance.Request req) throws Exception {
         Optional<UserBalance> userBalance = cashFacade.getUserBalance(req.getUserId());
 
@@ -51,6 +53,7 @@ public class CashController {
      * @return
      */
     @PatchMapping("/charge")
+    @Operation(summary = "잔액 충전", description = "사용자의 잔액을 충전한다.")
     public ResponseEntity<ResponseData> charge(@RequestBody Charge.Request req) throws Exception {
         Optional<UserBalance> balance = cashFacade.charge(req.getUserId(), req.getAmount());
 
@@ -69,6 +72,7 @@ public class CashController {
      * @return
      */
     @PostMapping("/payment")
+    @Operation(summary = "결제", description = "예약해놓은 좌석을 결제처리한다. 결제처리 후 토큰은 만료된다.")
     public ResponseEntity<ResponseData> payment(
             @RequestBody Payment.Request req,
             @RequestHeader("Queue-Token") String queueToken) throws Exception {

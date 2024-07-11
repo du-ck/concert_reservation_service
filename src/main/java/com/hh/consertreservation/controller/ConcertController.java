@@ -9,6 +9,7 @@ import com.hh.consertreservation.controller.dto.data.ResponseData;
 import com.hh.consertreservation.domain.dto.Concert;
 import com.hh.consertreservation.domain.dto.ConcertSchedule;
 import com.hh.consertreservation.domain.dto.Seat;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ public class ConcertController {
      * @return
      */
     @GetMapping("/dates")
+    @Operation(summary = "콘서트 예약가능 날짜 조회", description = "해당 콘서트의 예약가능한 날짜를 조회한다.")
     public ResponseEntity<ResponseData> concertDates(
             ConcertDates.Request req) {
         List<ConcertSchedule> schedules = concertFacade.getDates(req.getConcertId());
@@ -54,6 +56,7 @@ public class ConcertController {
      * @return
      */
     @GetMapping("/seats")
+    @Operation(summary = "예약가능 좌석 조회", description = "해당 날짜에 예약가능한 좌석을 조회한다.")
     public ResponseEntity<ResponseData> concertSeats(
             ConcertSeats.Request req,
             @RequestHeader("Queue-Token") String queueToken) throws Exception {
@@ -79,6 +82,7 @@ public class ConcertController {
      * @return
      */
     @PostMapping("/reservation")
+    @Operation(summary = "좌석 예약", description = "선택한 좌석을 임시배정 처리한다. 5분안에 결제가 없을 시 임시배정이 풀린다.")
     public ResponseEntity<ResponseData> reservation(
             @RequestBody Reservation.Request req,
             @RequestHeader("Queue-Token") String queueToken) throws Exception {
