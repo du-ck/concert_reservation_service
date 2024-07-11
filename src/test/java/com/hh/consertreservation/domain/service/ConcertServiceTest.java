@@ -3,9 +3,11 @@ package com.hh.consertreservation.domain.service;
 import com.hh.consertreservation.domain.dto.Concert;
 import com.hh.consertreservation.domain.dto.ConcertSchedule;
 import com.hh.consertreservation.domain.dto.Seat;
+import com.hh.consertreservation.domain.dto.types.SeatType;
 import com.hh.consertreservation.domain.repository.ConcertRepository;
 import com.hh.consertreservation.domain.repository.ScheduleRepository;
 import com.hh.consertreservation.domain.repository.SeatRepository;
+import com.hh.consertreservation.exception.ResourceNotFoundException;
 import com.hh.consertreservation.infra.entity.ScheduleEntity;
 import com.hh.consertreservation.infra.entity.SeatEntity;
 import org.junit.jupiter.api.Assertions;
@@ -38,11 +40,13 @@ class ConcertServiceTest {
 
     private Long userId;
     private Long concertId;
+    private Long scheduleId;
     private String concertDateTime;
 
     @BeforeEach
     void setUp() {
         userId = 1L;
+        scheduleId = 1L;
         concertId = 10L;
         concertDateTime = "2024-07-12 13:00";
     }
@@ -81,5 +85,52 @@ class ConcertServiceTest {
 
         Assertions.assertNotNull(resultList);
         Assertions.assertEquals(seats.size(), resultList.size());
+    }
+
+    @Test
+    void 좌석예약테스트() throws Exception {
+        Seat seat = Seat.builder().build();
+        seat.setMockData();
+        given(seatRepository.getSeatForReservation(scheduleId, 1L))
+                .willReturn(Optional.of(seat));
+
+        seat.reservation();
+        given(seatRepository.save(seat))
+                .willReturn(Optional.of(seat));
+
+        Optional<Seat> resultSeat = concertService.reservation(scheduleId, 1L);
+
+        Assertions.assertEquals(resultSeat.get().getStatus(), SeatType.TEMPORARILY);
+        Assertions.assertEquals(resultSeat.get().getSeatNumber(), 1L);
+    }
+
+    @Test
+    void 좌석예약_좌석없음() {
+        Seat seat = Seat.builder().build();
+        seat.setMockData();
+        given(seatRepository.getSeatForReservation(scheduleId, 1L))
+                .willReturn(Optional.empty());
+
+        Exception exception = Assertions.assertThrows(ResourceNotFoundException.class,
+                () -> concertService.reservation(scheduleId, 1L));
+
+        Assertions.assertEquals("해당 좌석 없음", exception.getMessage());
+    }
+
+    @Test
+    void 좌석예약_실패() throws Exception {
+        Seat seat = Seat.builder().build();
+        seat.setMockData();
+        given(seatRepository.getSeatForReservation(scheduleId, 1L))
+                .willReturn(Optional.of(seat));
+
+        seat.reservation();
+        given(seatRepository.save(seat))
+                .willReturn(Optional.empty());
+
+        Exception exception = Assertions.assertThrows(ResourceNotFoundException.class,
+                () -> concertService.reservation(scheduleId, 1L));
+
+        Assertions.assertEquals("좌석 예약 실패", exception.getMessage());
     }
 }

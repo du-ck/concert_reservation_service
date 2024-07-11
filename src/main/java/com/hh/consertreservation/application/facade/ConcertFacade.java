@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -19,5 +20,9 @@ public class ConcertFacade {
 
     public List<Seat> getSeats(long scheduleId, String concertDateTime) {
         return concertService.getSeats(scheduleId, concertDateTime);
+    }
+
+    public Optional<Seat> reservation(long scheduleId, long seatNumber) throws Exception {
+        return concertService.reservation(scheduleId, seatNumber);
     }
 }

@@ -15,7 +15,13 @@ public class Seat {
     private Long scheduleId;
     private Long seatNumber;
     private SeatType status;
+    private ConcertSchedule schedule;
     private LocalDateTime updatedAt;
+
+    public void reservation() {
+        this.status = SeatType.TEMPORARILY;
+        this.updatedAt = LocalDateTime.now();
+    }
 
     public void setMockData() {
         this.id = 1L;

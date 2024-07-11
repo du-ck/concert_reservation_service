@@ -53,4 +53,15 @@ public class ScheduleEntity {
     public static List<ConcertSchedule> toDomainList(List<ScheduleEntity> entities) {
         return entities.stream().map(m -> toDomain(m)).toList();
     }
+
+    public static ScheduleEntity toEntity(ConcertSchedule domain) {
+        return ScheduleEntity.builder()
+                .id(domain.getScheduleId())
+                .concertDate(domain.getConcertDate())
+                .description(domain.getDescription())
+                .price(domain.getPrice())
+                .seats(domain.getSeats())
+                .build();
+
+    }
 }

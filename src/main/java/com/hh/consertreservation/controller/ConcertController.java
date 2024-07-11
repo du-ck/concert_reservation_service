@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -80,7 +81,20 @@ public class ConcertController {
     @PostMapping("/reservation")
     public ResponseEntity<ResponseData> reservation(
             @RequestBody Reservation.Request req,
-            @RequestHeader("Queue-Token") String queueToken) {
-        return new ResponseEntity<>(null, HttpStatus.OK);
+            @RequestHeader("Queue-Token") String queueToken) throws Exception {
+
+        //토큰 검증
+        //tokenFacade.verification(req.getUserId(), queueToken);
+        Optional<Seat> seat = concertFacade.reservation(req.getScheduleId(), req.getSeatNumber());
+
+        Reservation.Response response = Reservation.Response.builder()
+                .seat(seat.get())
+                .build();
+
+        return new ResponseEntity<>(ResponseData.builder()
+                .isSuccess(true)
+                .code("200")
+                .data(response)
+                .build(), HttpStatus.OK);
     }
 }

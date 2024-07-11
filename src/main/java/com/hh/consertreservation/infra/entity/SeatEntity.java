@@ -47,10 +47,22 @@ public class SeatEntity {
                 .seatNumber(entity.getSeatNumber())
                 .status(entity.getStatus())
                 .updatedAt(entity.getUpdatedAt())
+                .schedule(ScheduleEntity.toDomain(entity.scheduleEntity))
                 .build();
     }
 
     public static List<Seat> toDomainList(List<SeatEntity> entities) {
         return entities.stream().map(m -> toDomain(m)).toList();
+    }
+
+    public static SeatEntity toEntity(Seat domain) {
+        return SeatEntity.builder()
+                .id(domain.getId())
+                .scheduleId(domain.getScheduleId())
+                .seatNumber(domain.getSeatNumber())
+                .status(domain.getStatus())
+                .updatedAt(domain.getUpdatedAt())
+                .scheduleEntity(ScheduleEntity.toEntity(domain.getSchedule()))
+                .build();
     }
 }

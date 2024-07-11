@@ -6,7 +6,6 @@ import com.hh.consertreservation.controller.dto.ConcertSeats;
 import com.hh.consertreservation.controller.dto.Reservation;
 import com.hh.consertreservation.domain.dto.Concert;
 import com.hh.consertreservation.domain.dto.Seat;
-import com.hh.consertreservation.domain.dto.servicerequest.ReservationServiceRequestDto;
 import com.hh.consertreservation.domain.service.ConcertService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
-import static org.mockito.BDDMockito.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -84,16 +82,17 @@ class ConcertControllerTest {
 
     @Test
     void reservation() throws Exception {
-        Reservation.Request req = Reservation.Request.builder()
-                .concertId(100L)
-                .concertDateTime("2024-07-10 11:30")
-                .userId(1L)
-                .seatNo(22L)
-                .build();
+        /*private Long scheduleId;
+        private Long userId;
+        private Long seatNo;*/
+        Reservation.Request req = new Reservation.Request();
+        req.setUserId(1L);
+        req.setScheduleId(1L);
+        req.setSeatNumber(22L);
         Seat seat = Seat.builder().build();
         seat.setMockData();
 
-        given(concertService.reservation(any(ReservationServiceRequestDto.class)))
+        given(concertService.reservation(req.getScheduleId(), req.getSeatNumber()))
                 .willReturn(Optional.of(seat));
 
         mockMvc.perform(post("/concert/reservation")

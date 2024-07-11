@@ -1,29 +1,22 @@
 package com.hh.consertreservation.controller.dto;
 
-import com.hh.consertreservation.domain.dto.ReservationInfo;
 import com.hh.consertreservation.domain.dto.Seat;
-import com.hh.consertreservation.domain.dto.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 public class Reservation {
-    @Builder
+    @Setter
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Request {
-        private Long concertId;
+        private Long scheduleId;
         private Long userId;
-        private String concertDateTime;
-        private Long seatNo;
+        private Long seatNumber;
     }
 
     @Builder
     @Getter
     public static class Response {
         Seat seat;  //예약요청한 좌석 (임시배정)
-        boolean result;     //임시배정 성공 여부
     }
 }

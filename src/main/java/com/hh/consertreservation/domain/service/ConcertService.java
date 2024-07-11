@@ -3,11 +3,12 @@ package com.hh.consertreservation.domain.service;
 import com.hh.consertreservation.domain.dto.Concert;
 import com.hh.consertreservation.domain.dto.ConcertSchedule;
 import com.hh.consertreservation.domain.dto.Seat;
-import com.hh.consertreservation.domain.dto.servicerequest.ReservationServiceRequestDto;
 import com.hh.consertreservation.domain.repository.ScheduleRepository;
 import com.hh.consertreservation.domain.repository.SeatRepository;
+import com.hh.consertreservation.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,25 @@ public class ConcertService {
         return new ArrayList<>();
     }
 
-    public Optional<Seat> reservation(ReservationServiceRequestDto req) {
-        return Optional.empty();
+    public Optional<Seat> reservation(long scheduleId, long seatNumber) throws Exception {
+        Optional<Seat> seatForReservation = seatRepository.getSeatForReservation(scheduleId, seatNumber);
+        if (!seatForReservation.isPresent()) {
+            throw new ResourceNotFoundException("해당 좌석 없음");
+        }
+        seatForReservation.get().reservation(); //예약처리 (좌석임시, update날짜 갱신)
+
+        Optional<Seat> saveSeat = seatRepository.save(seatForReservation.get());
+        if (!saveSeat.isPresent()) {
+            throw new ResourceNotFoundException("좌석 예약 실패");
+        }
+        return saveSeat;
+    }
+
+    /**
+     * 임시배정 해제 (스케쥴러 용)
+     */
+    @Transactional
+    public void setEmptySeat() {
+        seatRepository.setSeatStatusEmpty();
     }
 }
