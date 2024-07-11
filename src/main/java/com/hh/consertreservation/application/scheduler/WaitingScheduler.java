@@ -23,11 +23,11 @@ public class WaitingScheduler {
      * 프론트 단 에서는 발급받은 token의 id - nextOnGoingUserId 로 몇명이 앞에 남았는지
      * 짐작이 가능해진다.
      */
-    public static Long nextOnGoingUserId = MAXIMUM_ONGOING_COUNT + 1L;  //
+    public static Long nextOnGoingTokenId = MAXIMUM_ONGOING_COUNT + 1L;  //
 
     @Scheduled(fixedRate = 2000)
     public void tokenExpire() {
-        nextOnGoingUserId = waitingService.expire(nextOnGoingUserId);
+        nextOnGoingTokenId = waitingService.expire(nextOnGoingTokenId);
         /*log.info("Next OnGoing Expect Token ID : " + nextOnGoingUserId);*/
     }
 }

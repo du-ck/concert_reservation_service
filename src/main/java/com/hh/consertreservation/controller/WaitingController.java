@@ -8,10 +8,7 @@ import com.hh.consertreservation.domain.dto.Token;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -36,6 +33,21 @@ public class WaitingController {
                 .isSuccess(true)
                 .code("200")
                 .data(response)
+                .build(), HttpStatus.OK);
+    }
+
+    /**
+     * 대기열 순번을 알 수 있는 api
+     * @return
+     */
+    @GetMapping("/waiting")
+    public ResponseEntity<ResponseData> waitingCount() {
+        long nextOnGoingUserId = WaitingScheduler.nextOnGoingTokenId;
+
+        return new ResponseEntity<>(ResponseData.builder()
+                .isSuccess(true)
+                .code("200")
+                .data(nextOnGoingUserId)
                 .build(), HttpStatus.OK);
     }
 }
