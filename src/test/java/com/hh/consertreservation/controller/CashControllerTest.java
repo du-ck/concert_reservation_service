@@ -1,7 +1,6 @@
 package com.hh.consertreservation.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hh.consertreservation.controller.dto.Balance;
 import com.hh.consertreservation.controller.dto.Charge;
 import com.hh.consertreservation.controller.dto.Payment;
 import com.hh.consertreservation.domain.dto.ReservationInfo;
@@ -94,7 +93,7 @@ class CashControllerTest {
         reservationInfo.setMockData();
 
         Payment.Request req = Payment.Request.builder()
-                .userId(user.getUserId())
+                .userId(user.getId())
                 .concertId(reservationInfo.getConcert().getConcertId())
                 .seatNo(reservationInfo.getSeat().getSeatNumber())
                 .concertDateTime(reservationInfo.getConcert().getConcertDate())

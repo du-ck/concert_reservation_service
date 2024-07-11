@@ -1,5 +1,6 @@
 package com.hh.consertreservation.infra.entity;
 
+import com.hh.consertreservation.domain.dto.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,4 +27,18 @@ public class UserEntity {
 
     @Column(length = 50, nullable = false, unique = true)
     private String email;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "user_id")
+    private UserBalanceEntity userBalanceEntity;
+
+    public static User toDomain(UserEntity entity) {
+        return User.builder()
+                .id(entity.getId())
+                .userName(entity.getName())
+                .userName(entity.getName())
+                .email(entity.getEmail())
+                .balance(UserBalanceEntity.toDomain(entity.getUserBalanceEntity()))
+                .build();
+    }
 }

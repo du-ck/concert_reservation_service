@@ -39,7 +39,7 @@ class WaitingControllerTest {
                 .build();
         Token token = Token.builder().build();
         token.setMockData();
-        given(waitingService.issued(req.getUserId())).willReturn(Optional.of(token));
+        given(waitingService.issued(req.getUserId(), anyInt())).willReturn(Optional.of(token));
 
         mockMvc.perform(post("/token/issued")
                         .contentType(MediaType.APPLICATION_JSON)

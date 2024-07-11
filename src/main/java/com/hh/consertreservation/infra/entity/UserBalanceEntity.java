@@ -21,7 +21,7 @@ public class UserBalanceEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false, unique = true)
+    @Column(name = "user_id", nullable = false, unique = true, insertable = false, updatable = false)
     private Long userId;
 
     @Column(nullable = false)
@@ -29,6 +29,11 @@ public class UserBalanceEntity {
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     public static UserBalance toDomain(UserBalanceEntity entity) {
         return UserBalance.builder()
