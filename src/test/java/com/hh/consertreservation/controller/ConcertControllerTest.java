@@ -62,10 +62,9 @@ class ConcertControllerTest {
 
     @Test
     void concertSeats() throws Exception {
-        ConcertSeats.Request req = ConcertSeats.Request.builder()
-                .concertId(1L)
-                .concertDateTime("2024-07-10 11:30")
-                .build();
+        ConcertSeats.Request req = new ConcertSeats.Request();
+        req.setConcertId(1L);
+        req.setConcertDateTime("2024-07-10 11:30");
 
         given(concertService.getSeats(req.getConcertId(), req.getConcertDateTime()))
                 .willReturn(Seat.getMockListData());

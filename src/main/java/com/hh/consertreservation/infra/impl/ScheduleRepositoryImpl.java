@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,5 +21,14 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     public List<ConcertSchedule> findAllDates(long concertId) {
         List<ScheduleEntity> scheduleEntities = jpaRepository.findAllByConcertId(concertId);
         return ScheduleEntity.toDomainList(scheduleEntities);
+    }
+
+    @Override
+    public Optional<ConcertSchedule> getScheduleId(long concertId, String concertDateTime) {
+        Optional<ScheduleEntity> entity = jpaRepository.findScheduleId(concertId, concertDateTime);
+        if (entity.isPresent()) {
+            return Optional.of(ScheduleEntity.toDomain(entity.get()));
+        }
+        return Optional.empty();
     }
 }

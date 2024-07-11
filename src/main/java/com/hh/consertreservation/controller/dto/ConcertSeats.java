@@ -1,19 +1,17 @@
 package com.hh.consertreservation.controller.dto;
 
 import com.hh.consertreservation.domain.dto.Seat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 public class ConcertSeats {
-    @Builder
+    @Setter
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Request {
+        private Long userId;
         private Long concertId;
         private String concertDateTime;
     }

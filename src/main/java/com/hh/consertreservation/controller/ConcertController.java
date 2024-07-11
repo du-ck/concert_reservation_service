@@ -1,12 +1,14 @@
 package com.hh.consertreservation.controller;
 
 import com.hh.consertreservation.application.facade.ConcertFacade;
+import com.hh.consertreservation.application.facade.TokenFacade;
 import com.hh.consertreservation.controller.dto.ConcertDates;
 import com.hh.consertreservation.controller.dto.ConcertSeats;
 import com.hh.consertreservation.controller.dto.Reservation;
 import com.hh.consertreservation.controller.dto.data.ResponseData;
 import com.hh.consertreservation.domain.dto.Concert;
 import com.hh.consertreservation.domain.dto.ConcertSchedule;
+import com.hh.consertreservation.domain.dto.Seat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import java.util.List;
 public class ConcertController {
 
     private final ConcertFacade concertFacade;
+    private final TokenFacade tokenFacade;
 
     /**
      * 콘서트 예약가능 날짜 조회 API
@@ -52,8 +55,22 @@ public class ConcertController {
     @GetMapping("/seats")
     public ResponseEntity<ResponseData> concertSeats(
             ConcertSeats.Request req,
-            @RequestHeader("Queue-Token") String queueToken) {
-        return new ResponseEntity<>(null, HttpStatus.OK);
+            @RequestHeader("Queue-Token") String queueToken) throws Exception {
+
+        //토큰 검증
+        tokenFacade.verification(req.getUserId(), queueToken);
+
+        List<Seat> seats = concertFacade.getSeats(req.getConcertId(), req.getConcertDateTime());
+
+        ConcertSeats.Response response = ConcertSeats.Response.builder()
+                .seats(seats)
+                .build();
+
+        return new ResponseEntity<>(ResponseData.builder()
+                .isSuccess(true)
+                .code("200")
+                .data(response)
+                .build(), HttpStatus.OK);
     }
 
     /**
