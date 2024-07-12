@@ -8,6 +8,7 @@ import com.hh.consertreservation.domain.service.UserService;
 import com.hh.consertreservation.domain.service.WaitingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -24,10 +25,12 @@ public class CashFacade {
     }
 
 
+    @Transactional
     public Optional<UserBalance> charge(long userId, long amount) throws Exception {
         return cashService.charge(userId, amount);
     }
 
+    @Transactional
     public Optional<ReservationInfo> payment(PaymentFacadeRequestDto req) throws Exception {
         Optional<User> user = userService.getUser(req.getUserId());
         Optional<Seat> seat = concertService.getSeatWithId(req.getSeatId());

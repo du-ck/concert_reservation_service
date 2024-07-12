@@ -29,7 +29,7 @@ public class CashService {
         return result;
     }
 
-    @Transactional
+
     public Optional<UserBalance> charge(long userId, long amount) throws Exception {
         UserBalance userBalance = getUserBalance(userId).get();
         userBalance.charge(amount);
@@ -41,7 +41,7 @@ public class CashService {
         return Optional.empty();
     }
 
-    @Transactional
+
     public Optional<ReservationInfo> payment(User user, Seat seat, ConcertSchedule schedule) {
 
         //결제 처리

@@ -34,7 +34,7 @@ public class ConcertService {
         return new ArrayList<>();
     }
 
-    @Transactional
+
     public Optional<Seat> reservation(long scheduleId, long seatNumber) throws Exception {
         Optional<Seat> seatForReservation = seatRepository.getSeatForReservation(scheduleId, seatNumber);
         if (!seatForReservation.isPresent()) {

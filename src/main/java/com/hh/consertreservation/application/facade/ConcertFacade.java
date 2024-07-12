@@ -23,6 +23,7 @@ public class ConcertFacade {
         return concertService.getSeats(scheduleId, concertDateTime);
     }
 
+    @Transactional
     public Optional<Seat> reservation(long scheduleId, long seatNumber) throws Exception {
         return concertService.reservation(scheduleId, seatNumber);
     }
