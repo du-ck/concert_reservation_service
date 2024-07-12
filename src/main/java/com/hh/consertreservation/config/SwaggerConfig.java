@@ -1,4 +1,4 @@
-package com.hh.consertreservation.application.config;
+package com.hh.consertreservation.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
