@@ -1,9 +1,9 @@
 package com.hh.consertreservation.application.facade;
 
-import com.hh.consertreservation.domain.dto.Token;
-import com.hh.consertreservation.domain.dto.User;
-import com.hh.consertreservation.domain.service.UserService;
-import com.hh.consertreservation.domain.service.WaitingService;
+import com.hh.consertreservation.domain.waiting.Token;
+import com.hh.consertreservation.domain.user.User;
+import com.hh.consertreservation.domain.user.UserService;
+import com.hh.consertreservation.domain.waiting.WaitingService;
 import com.hh.consertreservation.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

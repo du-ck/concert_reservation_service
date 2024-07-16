@@ -1,29 +1,19 @@
 package com.hh.consertreservation.domain.service;
 
-import com.hh.consertreservation.domain.dto.Concert;
-import com.hh.consertreservation.domain.dto.ConcertSchedule;
-import com.hh.consertreservation.domain.dto.Seat;
-import com.hh.consertreservation.domain.dto.types.SeatType;
-import com.hh.consertreservation.domain.repository.ConcertRepository;
-import com.hh.consertreservation.domain.repository.ScheduleRepository;
-import com.hh.consertreservation.domain.repository.SeatRepository;
+import com.hh.consertreservation.domain.concert.*;
+import com.hh.consertreservation.domain.concert.SeatType;
 import com.hh.consertreservation.exception.ResourceNotFoundException;
-import com.hh.consertreservation.infra.entity.ScheduleEntity;
-import com.hh.consertreservation.infra.entity.SeatEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)

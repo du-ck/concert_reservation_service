@@ -1,8 +1,8 @@
 package com.hh.consertreservation.application.facade;
 
-import com.hh.consertreservation.domain.dto.ConcertSchedule;
-import com.hh.consertreservation.domain.dto.Seat;
-import com.hh.consertreservation.domain.service.ConcertService;
+import com.hh.consertreservation.domain.concert.ConcertSchedule;
+import com.hh.consertreservation.domain.concert.Seat;
+import com.hh.consertreservation.domain.concert.ConcertService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

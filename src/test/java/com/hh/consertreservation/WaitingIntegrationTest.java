@@ -1,11 +1,10 @@
 package com.hh.consertreservation;
 
-import com.hh.consertreservation.domain.dto.Token;
-import com.hh.consertreservation.domain.dto.types.WaitingType;
-import com.hh.consertreservation.domain.repository.WaitingRepository;
-import com.hh.consertreservation.domain.service.WaitingService;
-import com.hh.consertreservation.infra.entity.WaitingEntity;
-import com.hh.consertreservation.infra.jpa.WaitingJpaRepository;
+import com.hh.consertreservation.domain.waiting.Token;
+import com.hh.consertreservation.domain.waiting.WaitingType;
+import com.hh.consertreservation.domain.waiting.WaitingService;
+import com.hh.consertreservation.infra.waiting.WaitingEntity;
+import com.hh.consertreservation.infra.waiting.WaitingJpaRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

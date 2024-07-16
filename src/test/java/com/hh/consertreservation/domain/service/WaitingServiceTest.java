@@ -1,11 +1,9 @@
 package com.hh.consertreservation.domain.service;
 
-import com.hh.consertreservation.application.facade.TokenFacade;
-import com.hh.consertreservation.domain.dto.Token;
-import com.hh.consertreservation.domain.dto.types.WaitingType;
-import com.hh.consertreservation.domain.repository.UserRepository;
-import com.hh.consertreservation.domain.repository.WaitingRepository;
-import com.hh.consertreservation.exception.ResourceNotFoundException;
+import com.hh.consertreservation.domain.waiting.Token;
+import com.hh.consertreservation.domain.waiting.WaitingService;
+import com.hh.consertreservation.domain.waiting.WaitingType;
+import com.hh.consertreservation.domain.waiting.WaitingRepository;
 import com.hh.consertreservation.exception.TokenIssuedException;
 import com.hh.consertreservation.exception.TokenVerificationException;
 import org.junit.jupiter.api.Assertions;

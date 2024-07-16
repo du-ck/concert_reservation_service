@@ -1,11 +1,15 @@
 package com.hh.consertreservation.application.facade;
 
-import com.hh.consertreservation.domain.dto.*;
+import com.hh.consertreservation.domain.cash.ReservationInfo;
+import com.hh.consertreservation.domain.cash.UserBalance;
+import com.hh.consertreservation.domain.concert.ConcertSchedule;
+import com.hh.consertreservation.domain.concert.Seat;
 import com.hh.consertreservation.application.facade.dto.PaymentFacadeRequestDto;
-import com.hh.consertreservation.domain.service.CashService;
-import com.hh.consertreservation.domain.service.ConcertService;
-import com.hh.consertreservation.domain.service.UserService;
-import com.hh.consertreservation.domain.service.WaitingService;
+import com.hh.consertreservation.domain.cash.CashService;
+import com.hh.consertreservation.domain.concert.ConcertService;
+import com.hh.consertreservation.domain.user.User;
+import com.hh.consertreservation.domain.user.UserService;
+import com.hh.consertreservation.domain.waiting.WaitingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

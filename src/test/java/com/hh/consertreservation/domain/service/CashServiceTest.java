@@ -1,9 +1,11 @@
 package com.hh.consertreservation.domain.service;
 
-import com.hh.consertreservation.domain.dto.*;
-import com.hh.consertreservation.domain.dto.types.ReservationType;
-import com.hh.consertreservation.domain.repository.ReservationRepository;
-import com.hh.consertreservation.domain.repository.UserBalanceRepository;
+import com.hh.consertreservation.domain.cash.*;
+import com.hh.consertreservation.domain.concert.Concert;
+import com.hh.consertreservation.domain.concert.ConcertSchedule;
+import com.hh.consertreservation.domain.concert.Seat;
+import com.hh.consertreservation.domain.cash.ReservationType;
+import com.hh.consertreservation.domain.user.User;
 import com.hh.consertreservation.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +19,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
