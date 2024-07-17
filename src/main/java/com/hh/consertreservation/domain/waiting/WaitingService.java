@@ -1,7 +1,7 @@
 package com.hh.consertreservation.domain.waiting;
 
-import com.hh.consertreservation.exception.TokenIssuedException;
-import com.hh.consertreservation.exception.TokenVerificationException;
+import com.hh.consertreservation.support.exception.TokenIssuedException;
+import com.hh.consertreservation.support.exception.TokenVerificationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

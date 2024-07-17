@@ -4,7 +4,7 @@ import com.hh.consertreservation.domain.waiting.Token;
 import com.hh.consertreservation.domain.user.User;
 import com.hh.consertreservation.domain.user.UserService;
 import com.hh.consertreservation.domain.waiting.WaitingService;
-import com.hh.consertreservation.exception.ResourceNotFoundException;
+import com.hh.consertreservation.support.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package com.hh.consertreservation.exception;
+package com.hh.consertreservation.support.exception;
 
 public class ResourceNotFoundException extends Exception{
 

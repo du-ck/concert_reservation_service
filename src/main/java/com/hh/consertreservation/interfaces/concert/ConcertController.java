@@ -58,9 +58,6 @@ public class ConcertController {
             ConcertSeats.Request req,
             @RequestHeader("Queue-Token") String queueToken) throws Exception {
 
-        //토큰 검증
-        tokenFacade.verification(req.getUserId(), queueToken);
-
         List<Seat> seats = concertFacade.getSeats(req.getConcertId(), req.getConcertDateTime());
 
         ConcertSeats.Response response = ConcertSeats.Response.builder()
@@ -84,8 +81,6 @@ public class ConcertController {
             @RequestBody Reservation.Request req,
             @RequestHeader("Queue-Token") String queueToken) throws Exception {
 
-        //토큰 검증
-        tokenFacade.verification(req.getUserId(), queueToken);
         Optional<Seat> seat = concertFacade.reservation(req.getScheduleId(), req.getSeatNumber());
 
         Reservation.Response response = Reservation.Response.builder()

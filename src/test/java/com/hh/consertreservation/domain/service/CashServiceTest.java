@@ -6,7 +6,7 @@ import com.hh.consertreservation.domain.concert.ConcertSchedule;
 import com.hh.consertreservation.domain.concert.Seat;
 import com.hh.consertreservation.domain.cash.ReservationType;
 import com.hh.consertreservation.domain.user.User;
-import com.hh.consertreservation.exception.ResourceNotFoundException;
+import com.hh.consertreservation.support.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

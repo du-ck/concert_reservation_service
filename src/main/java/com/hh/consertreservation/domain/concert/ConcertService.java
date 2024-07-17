@@ -1,6 +1,6 @@
 package com.hh.consertreservation.domain.concert;
 
-import com.hh.consertreservation.exception.ResourceNotFoundException;
+import com.hh.consertreservation.support.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

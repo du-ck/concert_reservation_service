@@ -72,9 +72,6 @@ public class CashController {
             @RequestBody Payment.Request req,
             @RequestHeader("Queue-Token") String queueToken) throws Exception {
 
-        //토큰 검증
-        tokenFacade.verification(req.getUserId(), queueToken);
-
         Optional<ReservationInfo> reservation = cashFacade.payment(Payment.toServiceRequestDto(req, queueToken));
 
         Payment.Response response = Payment.Response.builder()

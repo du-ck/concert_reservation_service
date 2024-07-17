@@ -2,7 +2,7 @@ package com.hh.consertreservation.domain.service;
 
 import com.hh.consertreservation.domain.concert.*;
 import com.hh.consertreservation.domain.concert.SeatType;
-import com.hh.consertreservation.exception.ResourceNotFoundException;
+import com.hh.consertreservation.support.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

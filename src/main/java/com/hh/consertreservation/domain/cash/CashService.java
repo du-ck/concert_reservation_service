@@ -3,7 +3,7 @@ package com.hh.consertreservation.domain.cash;
 import com.hh.consertreservation.domain.concert.ConcertSchedule;
 import com.hh.consertreservation.domain.concert.Seat;
 import com.hh.consertreservation.domain.user.User;
-import com.hh.consertreservation.exception.ResourceNotFoundException;
+import com.hh.consertreservation.support.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
