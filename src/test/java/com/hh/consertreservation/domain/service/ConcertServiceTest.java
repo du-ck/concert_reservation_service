@@ -66,7 +66,7 @@ class ConcertServiceTest {
                 .build();
         List<Seat> seats = Seat.getMockListData();
 
-        given(scheduleRepository.getScheduleId(concertId, concertDateTime))
+        given(scheduleRepository.getScheduleIdWithLock(concertId, concertDateTime))
                 .willReturn(Optional.of(schedule));
         given(seatRepository.getSeats(schedule.getScheduleId()))
                 .willReturn(seats);

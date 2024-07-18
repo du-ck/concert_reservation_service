@@ -36,7 +36,7 @@ public class CashFacade {
 
     @Transactional
     public Optional<ReservationInfo> payment(PaymentFacadeRequestDto req) throws Exception {
-        Optional<User> user = userService.getUser(req.getUserId());
+        Optional<User> user = userService.getUserWithLock(req.getUserId());
         Optional<Seat> seat = concertService.getSeatWithId(req.getSeatId());
         Optional<ConcertSchedule> schedule = concertService.getScheduleWithId(req.getScheduleId());
 

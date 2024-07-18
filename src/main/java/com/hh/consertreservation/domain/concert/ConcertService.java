@@ -22,7 +22,7 @@ public class ConcertService {
 
     public List<Seat> getSeats(long concertId, String concertDateTime) {
         //concertId 와 concertDateTime 으로 스케쥴id를 찾는다.
-        Optional<ConcertSchedule> schedule = scheduleRepository.getScheduleId(concertId, concertDateTime);
+        Optional<ConcertSchedule> schedule = scheduleRepository.getScheduleIdWithLock(concertId, concertDateTime);
         if (schedule.isPresent()) {
             return seatRepository.getSeats(schedule.get().getScheduleId());
         }
@@ -53,7 +53,11 @@ public class ConcertService {
     }
 
     public Optional<Seat> getSeatWithId(long seatId) {
-        return seatRepository.findById(seatId);
+        Optional<Seat> seat = seatRepository.findByIdWithTemp(seatId);
+        if (!seat.isPresent()) {
+            throw new IllegalArgumentException("좌석이 없습니다");
+        }
+        return seat;
     }
 
     public Optional<ConcertSchedule> getScheduleWithId(long scheduleId) {

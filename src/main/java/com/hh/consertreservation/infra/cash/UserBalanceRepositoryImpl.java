@@ -23,6 +23,15 @@ public class UserBalanceRepositoryImpl implements UserBalanceRepository {
     }
 
     @Override
+    public Optional<UserBalance> findByUserIdWithLock(long userId) {
+        Optional<UserBalanceEntity> entity = jpaRepository.findByUserIdWithLock(userId);
+        if (entity.isPresent()) {
+            return Optional.of(UserBalanceEntity.toDomain(entity.get()));
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<UserBalance> save(UserBalance balance) {
         Optional<UserBalanceEntity> entity = Optional.of(jpaRepository.save(UserBalanceEntity.toEntity(balance)));
         if (entity.isPresent()) {

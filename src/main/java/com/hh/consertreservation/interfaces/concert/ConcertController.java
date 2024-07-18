@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/concert")
+@RequestMapping("/api/concert")
 public class ConcertController {
 
     private final ConcertFacade concertFacade;

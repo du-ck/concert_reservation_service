@@ -21,4 +21,13 @@ public class UserRepositoryImpl implements UserRepository {
         }
         return Optional.empty();
     }
+
+    @Override
+    public Optional<User> findByIdWithLock(long userId) {
+        Optional<UserEntity> userEntity = jpaRepository.findByIdWithLock(userId);
+        if (userEntity.isPresent()) {
+            return Optional.of(UserEntity.toDomain(userEntity.get()));
+        }
+        return Optional.empty();
+    }
 }

@@ -1,4 +1,4 @@
-package com.hh.consertreservation;
+package com.hh.consertreservation.integration;
 
 import com.hh.consertreservation.domain.waiting.Token;
 import com.hh.consertreservation.domain.waiting.WaitingType;

@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/cash")
+@RequestMapping("/api/cash")
 public class CashController {
 
     private final CashFacade cashFacade;

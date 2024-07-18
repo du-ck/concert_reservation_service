@@ -17,7 +17,7 @@ public class SeatScheduler {
      * 임시배정 5분 지난 좌석들 초기화하는 스케쥴러
      */
     @Scheduled(fixedRate = 2000)
-    public void tokenExpire() {
+    public void setSeatEmpty() {
         concertService.setEmptySeat();
     }
 }

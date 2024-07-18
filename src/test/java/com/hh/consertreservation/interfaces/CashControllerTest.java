@@ -54,7 +54,7 @@ class CashControllerTest {
 
         given(cashFacade.getUserBalance(1L)).willReturn(Optional.of(userBalance));
 
-        mockMvc.perform(get("/cash/balance")
+        mockMvc.perform(get("/api/cash/balance")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("userId", String.valueOf(1L)))
                 .andExpect(status().isOk())
@@ -80,7 +80,7 @@ class CashControllerTest {
 
         given(cashFacade.charge(req.getUserId(), req.getAmount()))
                 .willReturn(Optional.of(userBalance));
-        mockMvc.perform(patch("/cash/charge")
+        mockMvc.perform(patch("/api/cash/charge")
                         .content(objMapper.writeValueAsString(req))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -109,7 +109,7 @@ class CashControllerTest {
         given(cashFacade.payment(any(PaymentFacadeRequestDto.class)))
                 .willReturn(Optional.of(reservationInfo));
 
-        mockMvc.perform(post("/cash/payment")
+        mockMvc.perform(post("/api/cash/payment")
                         .content(objMapper.writeValueAsString(req))
                         .header("Queue-Token", "tokenTest")
                         .contentType(MediaType.APPLICATION_JSON))

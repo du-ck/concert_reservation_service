@@ -12,13 +12,14 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class ConcertFacade {
+public class  ConcertFacade {
     private final ConcertService concertService;
 
     public List<ConcertSchedule> getDates(long concertId) {
         return concertService.getDates(concertId);
     }
 
+    @Transactional
     public List<Seat> getSeats(long scheduleId, String concertDateTime) {
         return concertService.getSeats(scheduleId, concertDateTime);
     }

@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/token")
+@RequestMapping("/api/token")
 public class WaitingController {
 
     private final TokenFacade tokenFacade;

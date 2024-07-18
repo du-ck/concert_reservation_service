@@ -23,4 +23,18 @@ public class ReservationRepositoryImpl implements ReservationRepository {
         }
         return Optional.empty();
     }
+
+    @Override
+    public Optional<ReservationInfo> findByUserIdAndScheduleId(long userId, long scheduleId) {
+        Optional<ReservationEntity> entity = jpaRepository.findByUserIdAndScheduleId(userId, scheduleId);
+        if (entity.isPresent()) {
+            return Optional.of(ReservationEntity.toDomain(entity.get()));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public void deleteAll() {
+        jpaRepository.deleteAll();
+    }
 }

@@ -42,7 +42,7 @@ public class SeatEntity {
 
     public static Seat toDomain(SeatEntity entity) {
         return Seat.builder()
-                .id(entity.id)
+                .id(entity.getId())
                 .scheduleId(entity.getScheduleId())
                 .seatNumber(entity.getSeatNumber())
                 .status(entity.getStatus())

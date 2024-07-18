@@ -45,7 +45,7 @@ class WaitingControllerTest {
         token.setMockData();
         given(tokenFacade.issued(req.getUserId(), 500)).willReturn(Optional.of(token));
 
-        mockMvc.perform(post("/token/issued")
+        mockMvc.perform(post("/api/token/issued")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objMapper.writeValueAsString(req)))
                 .andExpect(status().isOk())

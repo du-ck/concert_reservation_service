@@ -55,7 +55,7 @@ class ConcertControllerTest {
         given(concertFacade.getDates(req.getConcertId()))
                 .willReturn(schedules);
 
-        mockMvc.perform(get("/concert/dates")
+        mockMvc.perform(get("/api/concert/dates")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Queue-Token", "tokenTest")
                         .param("concertId", String.valueOf(req.getConcertId())))
@@ -80,7 +80,7 @@ class ConcertControllerTest {
         given(concertFacade.getSeats(req.getConcertId(), req.getConcertDateTime()))
                 .willReturn(seats);
 
-        mockMvc.perform(get("/concert/seats")
+        mockMvc.perform(get("/api/concert/seats")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("userId", String.valueOf(req.getUserId()))
                         .param("concertId", String.valueOf(req.getConcertId()))
@@ -110,7 +110,7 @@ class ConcertControllerTest {
         given(concertFacade.reservation(req.getScheduleId(), req.getSeatNumber()))
                 .willReturn(Optional.of(seat));
 
-        mockMvc.perform(post("/concert/reservation")
+        mockMvc.perform(post("/api/concert/reservation")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objMapper.writeValueAsString(req))
                         .header("Queue-Token", "tokenTest"))

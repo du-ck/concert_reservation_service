@@ -16,4 +16,8 @@ public class UserService {
     public Optional<User> getUser(long userId) {
         return userRepository.findById(userId);
     }
+
+    public Optional<User> getUserWithLock(long userId) {
+        return userRepository.findByIdWithLock(userId);
+    }
 }

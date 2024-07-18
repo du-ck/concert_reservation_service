@@ -21,8 +21,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     }
 
     @Override
-    public Optional<ConcertSchedule> getScheduleId(long concertId, String concertDateTime) {
-        Optional<ScheduleEntity> entity = jpaRepository.findScheduleId(concertId, concertDateTime);
+    public Optional<ConcertSchedule> getScheduleIdWithLock(long concertId, String concertDateTime) {
+        Optional<ScheduleEntity> entity = jpaRepository.findScheduleIdWithLock(concertId, concertDateTime);
         if (entity.isPresent()) {
             return Optional.of(ScheduleEntity.toDomain(entity.get()));
         }

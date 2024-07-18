@@ -29,18 +29,28 @@ public class CashService {
 
 
     public Optional<UserBalance> charge(long userId, long amount) throws Exception {
-        UserBalance userBalance = getUserBalance(userId).get();
-        userBalance.charge(amount);
 
-        Optional<UserBalance> balance = userBalanceRepository.save(userBalance);
-        if (balance.isPresent()) {
-            return balance;
+        Optional<UserBalance> result = userBalanceRepository.findByUserIdWithLock(userId);
+        if (result.isPresent()) {
+            UserBalance userBalance = result.get();
+            userBalance.charge(amount);
+
+            Optional<UserBalance> balance = userBalanceRepository.save(userBalance);
+            if (balance.isPresent()) {
+                return balance;
+            }
         }
+
         return Optional.empty();
     }
 
 
     public Optional<ReservationInfo> payment(User user, Seat seat, ConcertSchedule schedule) {
+
+        Optional<ReservationInfo> reservationInfo = reservationRepository.findByUserIdAndScheduleId(user.getId(), schedule.getScheduleId());
+        if (reservationInfo.isPresent()) {
+            throw new IllegalArgumentException("이미 예약한 일정입니다");
+        }
 
         //결제 처리
         seat.paymentSeat();

@@ -25,8 +25,8 @@ public class ReservationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "concert_id", nullable = false)
-    private Long concertId;
+    @Column(name = "schedule_id", nullable = false)
+    private Long scheduleId;
 
     @Column(name = "concert_title", length = 100, nullable = false)
     private String concertTitle;
@@ -55,7 +55,7 @@ public class ReservationEntity {
 
     public static ReservationEntity toEntity(ReservationInfo domain) {
         return ReservationEntity.builder()
-                .concertId(domain.getConcertSchedule().getConcertId())
+                .scheduleId(domain.getConcertSchedule().getScheduleId())
                 .concertTitle(domain.getConcertSchedule().getTitle())
                 .seatId(domain.getSeat().getId())
                 .seatNumber(domain.getSeat().getSeatNumber())
@@ -75,7 +75,7 @@ public class ReservationEntity {
                         .userName(entity.getName())
                         .build())
                 .concertSchedule(ConcertSchedule.builder()
-                        .concertId(entity.getConcertId())
+                        .scheduleId(entity.getScheduleId())
                         .title(entity.getConcertTitle())
                         .build())
                 .seat(Seat.builder()

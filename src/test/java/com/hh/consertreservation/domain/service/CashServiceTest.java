@@ -52,7 +52,7 @@ class CashServiceTest {
                 .updatedAt(LocalDateTime.now())
                 .build();
 
-        given(userBalanceRepository.findByUserId(userId))
+        given(userBalanceRepository.findByUserIdWithLock(userId))
                 .willReturn(Optional.of(mockBalance));
 
         Optional<UserBalance> balance = cashService.getUserBalance(userId);
@@ -67,7 +67,7 @@ class CashServiceTest {
     @Test
     void 잔액조회_결과없음() {
 
-        given(userBalanceRepository.findByUserId(userId))
+        given(userBalanceRepository.findByUserIdWithLock(userId))
                 .willReturn(Optional.empty());
 
         Exception exception = Assertions.assertThrows(ResourceNotFoundException.class,
@@ -84,7 +84,7 @@ class CashServiceTest {
                 .balance(10000L)
                 .updatedAt(LocalDateTime.now()).build();
 
-        given(userBalanceRepository.findByUserId(userId))
+        given(userBalanceRepository.findByUserIdWithLock(userId))
                 .willReturn(Optional.of(balance));
 
         given(userBalanceRepository.save(balance))
@@ -105,7 +105,7 @@ class CashServiceTest {
                 .balance(10000L)
                 .updatedAt(LocalDateTime.now()).build();
 
-        given(userBalanceRepository.findByUserId(userId))
+        given(userBalanceRepository.findByUserIdWithLock(userId))
                 .willReturn(Optional.of(balance));
 
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class,
