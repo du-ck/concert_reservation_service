@@ -38,9 +38,9 @@ public class ApiControllerAdvice {
         return ResponseEntity.status(400).body(new ErrorResponse(false, "400", e.getMessage()));
     }
 
-    /*@ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(value = Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
         log.error(e.getMessage());
         return ResponseEntity.status(500).body(new ErrorResponse(false, "500", "에러가 발생했습니다."));
-    }*/
+    }
 }
