@@ -12,7 +12,7 @@ public interface UserBalanceJpaRepository extends JpaRepository<UserBalanceEntit
 
     Optional<UserBalanceEntity> findByUserId(long userId);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("select b from UserBalanceEntity b " +
             "where b.userId = :userId")
     Optional<UserBalanceEntity> findByUserIdWithLock(@Param("userId") long userId);

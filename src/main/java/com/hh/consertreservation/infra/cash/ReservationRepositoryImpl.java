@@ -4,7 +4,10 @@ import com.hh.consertreservation.domain.cash.ReservationInfo;
 import com.hh.consertreservation.domain.cash.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -25,12 +28,12 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public Optional<ReservationInfo> findByUserIdAndScheduleId(long userId, long scheduleId) {
-        Optional<ReservationEntity> entity = jpaRepository.findByUserIdAndScheduleId(userId, scheduleId);
-        if (entity.isPresent()) {
-            return Optional.of(ReservationEntity.toDomain(entity.get()));
+    public List<ReservationInfo> findByUserIdAndScheduleId(long userId, long scheduleId) {
+        List<ReservationEntity> entities = jpaRepository.findByUserIdAndScheduleId(userId, scheduleId);
+        if (!CollectionUtils.isEmpty(entities)) {
+            return ReservationEntity.toDomainList(entities);
         }
-        return Optional.empty();
+        return new ArrayList<>();
     }
 
     @Override

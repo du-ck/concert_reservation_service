@@ -14,4 +14,6 @@ public interface SeatRepository {
     void setSeatStatusEmpty();
     Optional<Seat> findByIdWithTemp(long seatId);
     Optional<Seat> setSeatReserved(long seatId);
+
+    void setSeatAllEmptyForTest(long scheduleId);
 }

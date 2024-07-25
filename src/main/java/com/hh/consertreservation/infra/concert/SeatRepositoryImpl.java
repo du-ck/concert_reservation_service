@@ -73,4 +73,14 @@ public class SeatRepositoryImpl implements SeatRepository {
         }
         return Optional.empty();
     }
+
+    @Override
+    public void setSeatAllEmptyForTest(long scheduleId) {
+        List<SeatEntity> seatEntities = jpaRepository.findByScheduleId(scheduleId);
+        seatEntities = seatEntities.stream().map(
+                m -> m.toBuilder().status(SeatType.EMPTY)
+                        .build()
+        ).toList();
+        jpaRepository.saveAll(seatEntities);
+    }
 }

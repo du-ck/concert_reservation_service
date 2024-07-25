@@ -13,6 +13,7 @@ public class Seat {
     private Long id;
     private Long scheduleId;
     private Long seatNumber;
+    private Long version;
     private SeatType status;
 
     private ConcertSchedule schedule;
