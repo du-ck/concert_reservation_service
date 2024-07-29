@@ -18,13 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
 
 @SpringBootTest
 @Slf4j
@@ -53,7 +51,7 @@ public class CashIntegrationTest {
     @Test
     void 충전_동시성테스트() throws Exception {
         long amount = 100L;
-        int numThreads = 5;    //쓰레드 개수
+        int numThreads = 1000;    //쓰레드 개수
         Optional<UserBalance> beforeBalance = cashFacade.getUserBalance(userId);
 
         CountDownLatch latch = new CountDownLatch(numThreads);  //쓰레드들을 동시 시작 및 종료를 관리하기 위한 객체
@@ -93,7 +91,7 @@ public class CashIntegrationTest {
 
         long seatId = 9L;
         long scheduleId = 1L;
-        Optional<Seat> tempSeat = concertFacade.reservation(scheduleId, seatId);
+        Optional<Seat> tempSeat = concertFacade.reserve(scheduleId, seatId);
         Optional<UserBalance> beforeBalance = cashFacade.getUserBalance(userId);
         //테스트를 위한 토큰 발급
         Optional<Token> token = tokenFacade.issued(userId, 500L);

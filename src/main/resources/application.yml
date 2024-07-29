@@ -10,7 +10,6 @@ spring:
     username: sa
     password:
     url: jdbc:h2:./data;NON_KEYWORDS=USER
-
   jpa:
     properties:
       hibernate:
@@ -20,3 +19,7 @@ spring:
   output:
     ansi:
       enabled: always
+  data:
+    redis:
+      host: localhost
+      port: 6379

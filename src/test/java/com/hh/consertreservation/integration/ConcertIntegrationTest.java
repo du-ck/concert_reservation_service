@@ -1,27 +1,14 @@
 package com.hh.consertreservation.integration;
 
-import com.hh.consertreservation.application.facade.CashFacade;
 import com.hh.consertreservation.application.facade.ConcertFacade;
-import com.hh.consertreservation.domain.cash.CashService;
-import com.hh.consertreservation.domain.concert.ConcertService;
-import com.hh.consertreservation.domain.concert.Seat;
 import com.hh.consertreservation.domain.concert.SeatRepository;
-import com.hh.consertreservation.domain.concert.SeatType;
-import com.hh.consertreservation.support.exception.ResourceNotFoundException;
-import jakarta.persistence.OptimisticLockException;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.StaleObjectStateException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.*;
 
 @SpringBootTest
@@ -59,7 +46,7 @@ public class ConcertIntegrationTest {
         for (int i = 0; i < numThreads; i++) {
             executorService.submit(() -> {
                 try {
-                    concertFacade.reservation(scheduleId, seatNumber);
+                    concertFacade.reserve(scheduleId, seatNumber);
                 } catch (ObjectOptimisticLockingFailureException e) {
                     log.error("[쓰레드ID : {}] ObjectOptimisticLockingFailureException :: {}", Thread.currentThread().getId() , e.getMessage());
                 } catch (Exception ex) {

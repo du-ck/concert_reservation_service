@@ -23,8 +23,8 @@ public class SeatRepositoryImpl implements SeatRepository {
     }
 
     @Override
-    public Optional<Seat> getSeatForReservation(long scheduleId, long seatNumber) {
-        Optional<SeatEntity> entity = jpaRepository.findSeatForReservationWithLock(scheduleId, seatNumber);
+    public Optional<Seat> getSeatForReserve(long scheduleId, long seatNumber) {
+        Optional<SeatEntity> entity = jpaRepository.findSeatForReserveWithLock(scheduleId, seatNumber);
         if (entity.isPresent()) {
             return Optional.of(SeatEntity.toDomain(entity.get()));
         }

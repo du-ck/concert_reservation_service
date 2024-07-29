@@ -24,7 +24,7 @@ public interface SeatJpaRepository extends JpaRepository<SeatEntity, Long> {
             "where s.scheduleId = :scheduleId " +
             "and s.seatNumber = :seatNumber " +
             "and s.status = 'EMPTY'")
-    Optional<SeatEntity> findSeatForReservationWithLock(@Param("scheduleId") long scheduleId, @Param("seatNumber") long seatNumber);
+    Optional<SeatEntity> findSeatForReserveWithLock(@Param("scheduleId") long scheduleId, @Param("seatNumber") long seatNumber);
 
     @Modifying(clearAutomatically = true)
     @Query(value = "update SeatEntity s set s.status = 'EMPTY' " +

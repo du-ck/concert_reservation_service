@@ -27,10 +27,8 @@ public class  ConcertFacade {
     }
 
 
-    public Optional<Seat> reservation(long scheduleId, long seatNumber) throws Exception {
-        log.info("[쓰레드ID : {}] 파사드 시작!!",Thread.currentThread().getId());
-        Optional<Seat> seat = concertService.reservation(scheduleId, seatNumber);
-        log.info("[쓰레드ID : {}] 파사드 끝!!",Thread.currentThread().getId());
+    public Optional<Seat> reserve(long scheduleId, long seatNumber) throws Exception {
+        Optional<Seat> seat = concertService.reserve(scheduleId, seatNumber);
         return seat;
     }
 }
