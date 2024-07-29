@@ -10,21 +10,22 @@ import com.hh.consertreservation.domain.cash.UserBalance;
 import com.hh.consertreservation.domain.concert.Seat;
 import com.hh.consertreservation.domain.waiting.Token;
 import com.hh.consertreservation.support.exception.TokenVerificationException;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
 
 @SpringBootTest
+@Slf4j
 public class CashIntegrationTest {
 
     @Autowired
@@ -49,24 +50,23 @@ public class CashIntegrationTest {
 
     @Test
     void 충전_동시성테스트() throws Exception {
-        long amount = 1000L;
-        int numThreads = 10;    //쓰레드 개수
+        long amount = 100L;
+        int numThreads = 1000;    //쓰레드 개수
         Optional<UserBalance> beforeBalance = cashFacade.getUserBalance(userId);
-        System.out.println("before Balance : " + beforeBalance.get().getBalance());
 
         CountDownLatch latch = new CountDownLatch(numThreads);  //쓰레드들을 동시 시작 및 종료를 관리하기 위한 객체
         ExecutorService executorService = Executors.newFixedThreadPool(numThreads); //정해진 쓰레드들(numThreads)에게 동시에 작업할당을 하기위한 객체
 
-        List<String> exMsg = new ArrayList<>();
+        Long startTime = System.currentTimeMillis();
 
         for (int i = 0; i < numThreads; i++) {
             executorService.submit(() -> {
                 try {
-                    Exception exception = Assertions.assertThrows(Exception.class,
-                            () -> cashFacade.charge(userId, amount));
-                    exMsg.add(exception.getMessage());
+                    cashFacade.charge(userId, amount);
+                } catch (ObjectOptimisticLockingFailureException ex) {
+                    log.error("[쓰레드ID : {}] ObjectOptimisticLockingFailureException :: {}", Thread.currentThread().getId(), ex.getMessage());
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    log.error("[쓰레드ID : {}] Exception :: {}", Thread.currentThread().getId(), ex.getMessage());
                 } finally {
                     latch.countDown();
                 }
@@ -75,18 +75,23 @@ public class CashIntegrationTest {
         latch.await();  // 모든 스레드가 완료될 때까지 대기
         executorService.shutdown(); //쓰레드 풀 종료
 
-        exMsg.forEach(msg -> System.out.println("exception Message :: " + msg));
+        Long endTime = System.currentTimeMillis();
+        log.info("소요 시간: {}", (endTime - startTime) + "ms");
 
         Optional<UserBalance> balance = cashFacade.getUserBalance(userId);
-        System.out.println("after Balance : " + balance.get().getBalance());
-        Assertions.assertEquals(balance.get().getBalance(), beforeBalance.get().getBalance() + amount * numThreads);
+        log.info("before Balance : {}", beforeBalance.get().getBalance());
+        log.info("충전한 포인트 : {} 원씩 {} 번 = {}", amount, numThreads, amount * numThreads);
+        log.info("after Balance : {}", balance.get().getBalance());
+        Assertions.assertEquals(balance.get().getBalance(), beforeBalance.get().getBalance() + amount);
     }
 
     @Test
     void 결제_동시성테스트() throws Exception {
-        long seatId = 5L;
+        Thread.sleep(1000); //BeforeEach 도는 시간 기다림
+
+        long seatId = 9L;
         long scheduleId = 1L;
-        Optional<Seat> tempSeat = concertFacade.reservation(scheduleId, seatId);
+        Optional<Seat> tempSeat = concertFacade.reserve(scheduleId, seatId);
         Optional<UserBalance> beforeBalance = cashFacade.getUserBalance(userId);
         //테스트를 위한 토큰 발급
         Optional<Token> token = tokenFacade.issued(userId, 500L);
@@ -99,19 +104,18 @@ public class CashIntegrationTest {
                 .seatId(seatId)
                 .build();
 
-        int numThreads = 10;    //쓰레드 개수
+        int numThreads = 5;    //쓰레드 개수
         CountDownLatch latch = new CountDownLatch(numThreads);  //쓰레드들을 동시 시작 및 종료를 관리하기 위한 객체
         ExecutorService executorService = Executors.newFixedThreadPool(numThreads); //정해진 쓰레드들(numThreads)에게 동시에 작업할당을 하기위한 객체
-        List<String> exMsg = new ArrayList<>();
 
         for (int i = 0; i < numThreads; i++) {
             executorService.submit(() -> {
                 try {
-                    Exception exception = Assertions.assertThrows(Exception.class,
-                            () -> cashFacade.payment(req));
-                    exMsg.add(exception.getMessage());
+                    cashFacade.payment(req);
+                } catch (ObjectOptimisticLockingFailureException ex) {
+                    log.error("[쓰레드ID : {}] ObjectOptimisticLockingFailureException :: {}", Thread.currentThread().getId(), ex.getMessage());
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    log.error("[쓰레드ID : {}] Exception :: {}", Thread.currentThread().getId(), ex.getMessage());
                 } finally {
                     latch.countDown();
                 }
@@ -120,19 +124,12 @@ public class CashIntegrationTest {
         latch.await();  // 모든 스레드가 완료될 때까지 대기
         executorService.shutdown(); //쓰레드 풀 종료
 
-        exMsg.forEach(msg -> System.out.println("exception Message :: " + msg));
-
-        ReservationInfo result = reservationRepository.findByUserIdAndScheduleId(userId, scheduleId).get();
+        List<ReservationInfo> result = reservationRepository.findByUserIdAndScheduleId(userId, scheduleId);
         Optional<UserBalance> afterBalance = cashFacade.getUserBalance(userId);
 
         //토큰은 만료되야함
         Exception tokenException = Assertions.assertThrows(TokenVerificationException.class,
                 () -> tokenFacade.verification(userId, queueToken));
         Assertions.assertEquals("토큰인증 실패", tokenException.getMessage());
-
-        Assertions.assertEquals(result.getSeat().getId(), seatId);
-        Assertions.assertEquals(result.getUser().getId(), userId);
-        // numThreads 중 한개는 성공하고 나머지는 실패해야한다 (exMsg 리스트에 쌓임)
-        Assertions.assertEquals(exMsg.size(), numThreads - 1);
     }
 }

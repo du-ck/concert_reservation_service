@@ -6,9 +6,15 @@ import com.hh.consertreservation.domain.user.User;
 import com.hh.consertreservation.support.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,9 +34,12 @@ public class CashService {
     }
 
 
+    @Retryable(retryFor = ObjectOptimisticLockingFailureException.class, maxAttempts = 3, backoff = @Backoff(delay = 1000))
+    @Transactional
     public Optional<UserBalance> charge(long userId, long amount) throws Exception {
 
         Optional<UserBalance> result = userBalanceRepository.findByUserIdWithLock(userId);
+
         if (result.isPresent()) {
             UserBalance userBalance = result.get();
             userBalance.charge(amount);
@@ -40,22 +49,20 @@ public class CashService {
                 return balance;
             }
         }
-
         return Optional.empty();
     }
 
 
     public Optional<ReservationInfo> payment(User user, Seat seat, ConcertSchedule schedule) {
-
-        Optional<ReservationInfo> reservationInfo = reservationRepository.findByUserIdAndScheduleId(user.getId(), schedule.getScheduleId());
-        if (reservationInfo.isPresent()) {
+        
+        List<ReservationInfo> reservationInfo = reservationRepository.findByUserIdAndScheduleId(user.getId(), schedule.getScheduleId());
+        if (!CollectionUtils.isEmpty(reservationInfo)) {
             throw new IllegalArgumentException("이미 예약한 일정입니다");
         }
 
         //결제 처리
         seat.paymentSeat();
         user.getBalance().payment(schedule.getPrice());
-
         //결제처리된 잔액으로 저장
         Optional<UserBalance> balance = userBalanceRepository.save(user.getBalance());
 

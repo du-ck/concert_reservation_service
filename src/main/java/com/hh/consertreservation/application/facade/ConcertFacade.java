@@ -4,6 +4,7 @@ import com.hh.consertreservation.domain.concert.ConcertSchedule;
 import com.hh.consertreservation.domain.concert.Seat;
 import com.hh.consertreservation.domain.concert.ConcertService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class  ConcertFacade {
     private final ConcertService concertService;
 
@@ -24,8 +26,9 @@ public class  ConcertFacade {
         return concertService.getSeats(scheduleId, concertDateTime);
     }
 
-    @Transactional
-    public Optional<Seat> reservation(long scheduleId, long seatNumber) throws Exception {
-        return concertService.reservation(scheduleId, seatNumber);
+
+    public Optional<Seat> reserve(long scheduleId, long seatNumber) throws Exception {
+        Optional<Seat> seat = concertService.reserve(scheduleId, seatNumber);
+        return seat;
     }
 }

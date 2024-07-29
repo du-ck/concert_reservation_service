@@ -81,14 +81,14 @@ class ConcertServiceTest {
     void 좌석예약테스트() throws Exception {
         Seat seat = Seat.builder().build();
         seat.setMockData();
-        given(seatRepository.getSeatForReservation(scheduleId, 1L))
+        given(seatRepository.getSeatForReserve(scheduleId, 1L))
                 .willReturn(Optional.of(seat));
 
         seat.reservation();
         given(seatRepository.save(seat))
                 .willReturn(Optional.of(seat));
 
-        Optional<Seat> resultSeat = concertService.reservation(scheduleId, 1L);
+        Optional<Seat> resultSeat = concertService.reserve(scheduleId, 1L);
 
         Assertions.assertEquals(resultSeat.get().getStatus(), SeatType.TEMPORARILY);
         Assertions.assertEquals(resultSeat.get().getSeatNumber(), 1L);
@@ -98,11 +98,11 @@ class ConcertServiceTest {
     void 좌석예약_좌석없음() {
         Seat seat = Seat.builder().build();
         seat.setMockData();
-        given(seatRepository.getSeatForReservation(scheduleId, 1L))
+        given(seatRepository.getSeatForReserve(scheduleId, 1L))
                 .willReturn(Optional.empty());
 
         Exception exception = Assertions.assertThrows(ResourceNotFoundException.class,
-                () -> concertService.reservation(scheduleId, 1L));
+                () -> concertService.reserve(scheduleId, 1L));
 
         Assertions.assertEquals("해당 좌석 없음", exception.getMessage());
     }
@@ -111,7 +111,7 @@ class ConcertServiceTest {
     void 좌석예약_실패() throws Exception {
         Seat seat = Seat.builder().build();
         seat.setMockData();
-        given(seatRepository.getSeatForReservation(scheduleId, 1L))
+        given(seatRepository.getSeatForReserve(scheduleId, 1L))
                 .willReturn(Optional.of(seat));
 
         seat.reservation();
@@ -119,7 +119,7 @@ class ConcertServiceTest {
                 .willReturn(Optional.empty());
 
         Exception exception = Assertions.assertThrows(ResourceNotFoundException.class,
-                () -> concertService.reservation(scheduleId, 1L));
+                () -> concertService.reserve(scheduleId, 1L));
 
         Assertions.assertEquals("좌석 예약 실패", exception.getMessage());
     }

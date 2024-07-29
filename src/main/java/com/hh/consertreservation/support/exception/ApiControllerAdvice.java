@@ -15,7 +15,8 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(value = ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
-        log.error(e.getMessage());
+        //log.error(e.getMessage());
+        log.error("[{}] 에러 :: {}",Thread.currentThread().getName(), e.getMessage());
         //조회결과가 없는 exception 의 경우 success = true 처리.
         return ResponseEntity.status(404).body(new ErrorResponse(true, "404", e.getMessage()));
     }

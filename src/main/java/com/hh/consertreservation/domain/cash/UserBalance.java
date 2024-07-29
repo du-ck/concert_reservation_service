@@ -11,6 +11,7 @@ public class UserBalance {
     private Long id;
     private Long userId;
     private Long balance;
+    private Long version;
     private LocalDateTime updatedAt;
 
 

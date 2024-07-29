@@ -77,11 +77,11 @@ public class ConcertController {
      */
     @PostMapping("/reservation")
     @Operation(summary = "좌석 예약", description = "선택한 좌석을 임시배정 처리한다. 5분안에 결제가 없을 시 임시배정이 풀린다.")
-    public ResponseEntity<ResponseData> reservation(
+    public ResponseEntity<ResponseData> reserve(
             @RequestBody Reservation.Request req,
             @RequestHeader("Queue-Token") String queueToken) throws Exception {
 
-        Optional<Seat> seat = concertFacade.reservation(req.getScheduleId(), req.getSeatNumber());
+        Optional<Seat> seat = concertFacade.reserve(req.getScheduleId(), req.getSeatNumber());
 
         Reservation.Response response = Reservation.Response.builder()
                 .seat(seat.get())

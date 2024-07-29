@@ -31,6 +31,9 @@ public class UserBalanceEntity {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @Version
+    private Long version;
+
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "user_id")
@@ -41,6 +44,7 @@ public class UserBalanceEntity {
                 .id(entity.getId())
                 .userId(entity.getUserId())
                 .balance(entity.getBalance())
+                .version(entity.getVersion())
                 .updatedAt(entity.getUpdatedAt())
                 .build();
     }
@@ -50,6 +54,7 @@ public class UserBalanceEntity {
                 .id(domain.getId())
                 .userId(domain.getUserId())
                 .balance(domain.getBalance())
+                .version(domain.getVersion())
                 .updatedAt(LocalDateTime.now())
                 .build();
     }

@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -85,5 +86,9 @@ public class ReservationEntity {
                 .createdAt(entity.getCreatedAt())
                 .status(entity.getStatus())
                 .build();
+    }
+
+    public static List<ReservationInfo> toDomainList(List<ReservationEntity> entities) {
+        return entities.stream().map(m -> toDomain(m)).toList();
     }
 }

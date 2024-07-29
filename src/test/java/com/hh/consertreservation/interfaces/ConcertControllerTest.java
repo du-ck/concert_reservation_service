@@ -107,7 +107,7 @@ class ConcertControllerTest {
         Seat seat = Seat.builder().build();
         seat.setMockData();
 
-        given(concertFacade.reservation(req.getScheduleId(), req.getSeatNumber()))
+        given(concertFacade.reserve(req.getScheduleId(), req.getSeatNumber()))
                 .willReturn(Optional.of(seat));
 
         mockMvc.perform(post("/api/concert/reservation")

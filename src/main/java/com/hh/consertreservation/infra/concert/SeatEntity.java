@@ -23,11 +23,14 @@ public class SeatEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "schedule_id", nullable = false, insertable = false, updatable = false)
+    @Column(name = "schedule_id", nullable = false)
     private Long scheduleId;
 
     @Column(name = "seat_number", nullable = false)
     private Long seatNumber;
+
+    @Version
+    private Long version;
 
     @Column(length = 15, nullable = false)
     @Enumerated(EnumType.STRING)
@@ -37,7 +40,7 @@ public class SeatEntity {
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_id")
+    @JoinColumn(name = "schedule_id", insertable = false, updatable = false)
     private ScheduleEntity scheduleEntity;
 
     public static Seat toDomain(SeatEntity entity) {
@@ -46,6 +49,7 @@ public class SeatEntity {
                 .scheduleId(entity.getScheduleId())
                 .seatNumber(entity.getSeatNumber())
                 .status(entity.getStatus())
+                .version(entity.getVersion())
                 .updatedAt(entity.getUpdatedAt())
                 .schedule(ScheduleEntity.toDomain(entity.getScheduleEntity()))
                 .build();
@@ -60,6 +64,7 @@ public class SeatEntity {
                 .id(domain.getId())
                 .scheduleId(domain.getScheduleId())
                 .seatNumber(domain.getSeatNumber())
+                .version(domain.getVersion())
                 .status(domain.getStatus())
                 .updatedAt(domain.getUpdatedAt())
                 .scheduleEntity(ScheduleEntity.toEntity(domain.getSchedule()))
