@@ -43,14 +43,14 @@ class WaitingControllerTest {
                 .build();
         Token token = Token.builder().build();
         token.setMockData();
-        given(tokenFacade.issued(req.getUserId(), 500)).willReturn(Optional.of(token));
+        given(tokenFacade.issued(req.getUserId(), 500))
+                .willReturn("test:1");
 
         mockMvc.perform(post("/api/token/issued")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objMapper.writeValueAsString(req)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").exists())
-                .andExpect(jsonPath("$.data.userId").exists())
                 .andExpect(jsonPath("$.data.queueToken").exists());
     }
 }

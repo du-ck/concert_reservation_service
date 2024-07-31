@@ -23,11 +23,10 @@ public class WaitingController {
     @Operation(summary = "대기열 토큰 발급", description = "대기열 토큰을 발급한다.")
     public ResponseEntity<ResponseData> tokenIssued(@RequestBody TokenIssued.Request req) throws Exception {
 
-        Optional<Token> token = tokenFacade.issued(req.getUserId(), WaitingScheduler.MAXIMUM_ONGOING_COUNT);
+        String token = tokenFacade.issued(req.getUserId(), WaitingScheduler.MAXIMUM_ONGOING_COUNT);
 
         TokenIssued.Response response = TokenIssued.Response.builder()
-                .userId(token.get().getUserId())
-                .queueToken(token.get().getQueueToken())
+                .queueToken(token)
                 .build();
 
         return new ResponseEntity<>(ResponseData.builder()
@@ -42,14 +41,14 @@ public class WaitingController {
      * @return
      */
     @GetMapping("/waiting")
-    @Operation(summary = "대기열 순번 조회", description = "다음 OnGoing 우선순위의 토큰id를 조회한다")
-    public ResponseEntity<ResponseData> waitingCount() {
-        long nextOnGoingUserId = WaitingScheduler.nextOnGoingTokenId;
+    @Operation(summary = "대기열 순번 조회", description = "대기열 몇번째 순서인지 조회한다")
+    public ResponseEntity<ResponseData> waitingCount(@RequestHeader("Queue-Token") String queueToken) {
+        Optional<Long> position = tokenFacade.getWaitingPosition(queueToken);
 
         return new ResponseEntity<>(ResponseData.builder()
                 .isSuccess(true)
                 .code("200")
-                .data(nextOnGoingUserId)
+                .data(position)
                 .build(), HttpStatus.OK);
     }
 }

@@ -1,9 +1,7 @@
 package com.hh.consertreservation.domain.service;
 
-import com.hh.consertreservation.domain.waiting.Token;
-import com.hh.consertreservation.domain.waiting.WaitingService;
-import com.hh.consertreservation.domain.waiting.WaitingType;
-import com.hh.consertreservation.domain.waiting.WaitingRepository;
+import com.hh.consertreservation.domain.common.RedisRepository;
+import com.hh.consertreservation.domain.waiting.*;
 import com.hh.consertreservation.support.exception.TokenIssuedException;
 import com.hh.consertreservation.support.exception.TokenVerificationException;
 import org.junit.jupiter.api.Assertions;
@@ -14,9 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.mockito.BDDMockito.*;
 
@@ -28,6 +24,9 @@ class WaitingServiceTest {
 
     @Mock
     private WaitingRepository waitingRepository;
+
+    @Mock
+    private RedisRepository redisRepository;
 
     private Long userId;
     private Long max_ongoing_count;
@@ -41,24 +40,16 @@ class WaitingServiceTest {
     @Test
     void 토큰발급() throws Exception {
         UUID uuid = UUID.randomUUID();
-        Token token = Token.builder()
-                .id(1L)
-                .userId(userId)
-                .queueToken(uuid.toString())
-                .createdAt(LocalDateTime.now())
-                .expiresAt(LocalDateTime.now().plusMinutes(5))
-                .status(WaitingType.WAITING)
-                .build();
+        String tokenWithUserId = String.format("%s:%s", uuid, userId);
+        Set<Object> sets = new HashSet<>();
 
-        given(waitingRepository.getOnGoingCount())
-                .willReturn(100);
-        given(waitingRepository.addToken(anyLong(), anyString(), any(WaitingType.class)))
-                .willReturn(Optional.of(token));
+        given(redisRepository.getActiveTokenCount())
+                .willReturn(0);
+        given(redisRepository.addActiveToken(Collections.singletonList(any(ActiveToken.class))))
+                .willReturn(true);
 
-        Optional<Token> issuedToken = waitingService.issued(userId, max_ongoing_count);
-
-        Assertions.assertEquals(uuid.toString(), issuedToken.get().getQueueToken());
-        Assertions.assertEquals(userId, issuedToken.get().getUserId());
+        String issuedToken = waitingService.issued(userId, max_ongoing_count);
+        Assertions.assertNotNull(issuedToken);
     }
 
     @Test
@@ -78,38 +69,24 @@ class WaitingServiceTest {
     @Test
     void 토큰인증() throws Exception {
         UUID uuid = UUID.randomUUID();
-        Token token = Token.builder()
-                .id(1L)
-                .userId(userId)
-                .queueToken(uuid.toString())
-                .createdAt(LocalDateTime.now())
-                .expiresAt(LocalDateTime.now().plusMinutes(5))
-                .status(WaitingType.ONGOING)
-                .build();
-        given(waitingRepository.getOngoingToken(userId, uuid.toString()))
-                .willReturn(Optional.of(token));
+        given(redisRepository.existActiveToken(anyString()))
+                .willReturn(true);
 
-        boolean result = waitingService.verification(userId, uuid.toString());
+        boolean result = waitingService.verification(uuid.toString());
 
         Assertions.assertEquals(result, true);
     }
 
     @Test
-    void 토큰인증_실패() {
+    void 토큰인증_실패() throws Exception {
         UUID uuid = UUID.randomUUID();
-        Token token = Token.builder()
-                .id(1L)
-                .userId(userId)
-                .queueToken(uuid.toString())
-                .createdAt(LocalDateTime.now())
-                .expiresAt(LocalDateTime.now().plusMinutes(5))
-                .status(WaitingType.ONGOING)
-                .build();
-        given(waitingRepository.getOngoingToken(userId, uuid.toString()))
-                .willReturn(Optional.empty());
+        given(redisRepository.existActiveToken(anyString()))
+                .willReturn(false);
+
+        boolean result = waitingService.verification(uuid.toString());
 
         Exception exception = Assertions.assertThrows(TokenVerificationException.class,
-                () -> waitingService.verification(userId, uuid.toString()));
+                () -> waitingService.verification(uuid.toString()));
         Assertions.assertEquals("토큰인증 실패", exception.getMessage());
     }
 }

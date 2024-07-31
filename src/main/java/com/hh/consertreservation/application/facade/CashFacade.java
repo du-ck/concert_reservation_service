@@ -52,7 +52,7 @@ public class CashFacade {
             // 2. user 잔액 차감 (cashService.payment() 에서 진행)
             // 3. 토큰 만료
             Optional<Seat> reservedSeat = concertService.setReservedSeat(req.getSeatId());
-            int expireTokenCount = waitingService.expireAfterPayment(req.getUserId(), req.getToken());
+            Long expireTokenCount = waitingService.expireAfterPayment(req.getToken());
             return reservation;
         }
         return Optional.empty();
