@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,9 @@ class ConcertServiceTest {
     @Mock
     ScheduleRepository scheduleRepository;
 
+    @Mock
+    ConcertRepository concertRepository;
+
     private Long userId;
     private Long concertId;
     private Long scheduleId;
@@ -39,6 +43,29 @@ class ConcertServiceTest {
         scheduleId = 1L;
         concertId = 10L;
         concertDateTime = "2024-07-12 13:00";
+    }
+
+    @Test
+    void 목록조회() {
+        List<ConcertTitle> concerts = new ArrayList<>();
+        concerts.add(ConcertTitle.builder()
+                .concertId(100L)
+                .title("짱구는 못말려 극장판 8기")
+                .build());
+        concerts.add(ConcertTitle.builder()
+                .concertId(200L)
+                .title("짱구는 못말려 극장판 9기")
+                .build());
+        concerts.add(ConcertTitle.builder()
+                .concertId(300L)
+                .title("짱구는 못말려 극장판 10기")
+                .build());
+        given(concertRepository.findAll())
+                .willReturn(concerts);
+
+        List<ConcertTitle> resultList = concertService.getConcerts();
+        Assertions.assertNotNull(resultList);
+        Assertions.assertEquals(concerts.size(), resultList.size());
     }
 
     @Test

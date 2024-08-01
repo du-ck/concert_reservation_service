@@ -1,6 +1,7 @@
 package com.hh.consertreservation.application.facade;
 
 import com.hh.consertreservation.domain.concert.ConcertSchedule;
+import com.hh.consertreservation.domain.concert.ConcertTitle;
 import com.hh.consertreservation.domain.concert.Seat;
 import com.hh.consertreservation.domain.concert.ConcertService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,10 @@ import java.util.Optional;
 @Slf4j
 public class  ConcertFacade {
     private final ConcertService concertService;
+
+    public List<ConcertTitle> getConcerts() {
+        return concertService.getConcerts();
+    }
 
     public List<ConcertSchedule> getDates(long concertId) {
         return concertService.getDates(concertId);

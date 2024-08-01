@@ -20,6 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/cash/charge",
                         "/api/cash/balance",
                         "/api/token/**",
-                        "/api/concert/dates");
+                        "/api/concert/dates",
+                        "/api/concert/list");
     }
 }
