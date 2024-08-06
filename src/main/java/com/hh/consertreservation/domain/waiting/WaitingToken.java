@@ -5,10 +5,7 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * redis 에서 WaitingToken 을 관리하기 위한 클래스
@@ -22,7 +19,7 @@ public class WaitingToken {
 
     private Long userId;
 
-    public void issued() {
+    public void issue() {
         UUID uuid = UUID.randomUUID();
         this.token = String.format("%s:%s", uuid, userId);
         this.requestTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);

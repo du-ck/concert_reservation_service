@@ -8,7 +8,6 @@ import com.hh.consertreservation.domain.cash.ReservationInfo;
 import com.hh.consertreservation.domain.cash.ReservationRepository;
 import com.hh.consertreservation.domain.cash.UserBalance;
 import com.hh.consertreservation.domain.concert.Seat;
-import com.hh.consertreservation.domain.waiting.Token;
 import com.hh.consertreservation.support.exception.TokenVerificationException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
@@ -94,7 +93,7 @@ public class CashIntegrationTest {
         Optional<Seat> tempSeat = concertFacade.reserve(scheduleId, seatId);
         Optional<UserBalance> beforeBalance = cashFacade.getUserBalance(userId);
         //테스트를 위한 토큰 발급
-        String token = tokenFacade.issued(userId, 500L);
+        String token = tokenFacade.issue(userId, 500L);
 
         PaymentFacadeRequestDto req = PaymentFacadeRequestDto.builder()
                 .userId(userId)

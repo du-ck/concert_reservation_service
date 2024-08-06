@@ -1,6 +1,6 @@
 package com.hh.consertreservation.domain.service;
 
-import com.hh.consertreservation.domain.common.RedisRepository;
+import com.hh.consertreservation.domain.waiting.WaitingRepository;
 import com.hh.consertreservation.domain.waiting.*;
 import com.hh.consertreservation.support.exception.TokenIssuedException;
 import com.hh.consertreservation.support.exception.TokenVerificationException;
@@ -26,7 +26,7 @@ class WaitingServiceTest {
     private WaitingRepository waitingRepository;
 
     @Mock
-    private RedisRepository redisRepository;
+    private WaitingRepository redisRepository;
 
     private Long userId;
     private Long max_ongoing_count;
@@ -48,20 +48,23 @@ class WaitingServiceTest {
         given(redisRepository.addActiveToken(Collections.singletonList(any(ActiveToken.class))))
                 .willReturn(true);
 
-        String issuedToken = waitingService.issued(userId, max_ongoing_count);
+        String issuedToken = waitingService.issue(userId, max_ongoing_count);
         Assertions.assertNotNull(issuedToken);
     }
 
     @Test
     void 발급실패() {
 
-        given(waitingRepository.getOnGoingCount())
+        given(waitingRepository.getActiveTokenCount())
                 .willReturn(100);
-        given(waitingRepository.addToken(anyLong(), anyString(), any(WaitingType.class)))
-                .willReturn(Optional.empty());
+        ActiveToken activeToken = ActiveToken.builder()
+                .userId(userId).build();
+        activeToken.issue();
+        given(waitingRepository.addActiveToken(Collections.singletonList(activeToken)))
+                .willReturn(false);
 
         Exception exception = Assertions.assertThrows(TokenIssuedException.class,
-                () -> waitingService.issued(userId, max_ongoing_count));
+                () -> waitingService.issue(userId, max_ongoing_count));
 
         Assertions.assertEquals("토큰 발급 실패", exception.getMessage());
     }

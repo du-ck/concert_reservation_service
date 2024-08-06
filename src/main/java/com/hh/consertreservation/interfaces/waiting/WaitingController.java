@@ -3,7 +3,6 @@ package com.hh.consertreservation.interfaces.waiting;
 import com.hh.consertreservation.application.facade.TokenFacade;
 import com.hh.consertreservation.interfaces.scheduler.WaitingScheduler;
 import com.hh.consertreservation.interfaces.dto.ResponseData;
-import com.hh.consertreservation.domain.waiting.Token;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,7 @@ public class WaitingController {
     @Operation(summary = "대기열 토큰 발급", description = "대기열 토큰을 발급한다.")
     public ResponseEntity<ResponseData> tokenIssued(@RequestBody TokenIssued.Request req) throws Exception {
 
-        String token = tokenFacade.issued(req.getUserId(), WaitingScheduler.MAXIMUM_ONGOING_COUNT);
+        String token = tokenFacade.issue(req.getUserId(), WaitingScheduler.MAXIMUM_ONGOING_COUNT);
 
         TokenIssued.Response response = TokenIssued.Response.builder()
                 .queueToken(token)
