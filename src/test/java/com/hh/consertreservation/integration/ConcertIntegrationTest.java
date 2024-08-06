@@ -1,6 +1,7 @@
 package com.hh.consertreservation.integration;
 
 import com.hh.consertreservation.application.facade.ConcertFacade;
+import com.hh.consertreservation.domain.concert.ConcertService;
 import com.hh.consertreservation.domain.concert.SeatRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,9 @@ public class ConcertIntegrationTest {
 
     @Autowired
     SeatRepository seatRepository;
+
+    @Autowired
+    ConcertService concertService;
 
     private Long userId;
     private Long scheduleId;
@@ -61,5 +65,49 @@ public class ConcertIntegrationTest {
 
         Long endTime = System.currentTimeMillis();
         log.info("소요 시간: {}", (endTime - startTime) + "ms");
+    }
+
+    @Test
+    void 날짜조회_캐싱처리_속도비교() throws Exception {
+
+        //캐싱을 위해 호출
+        concertService.getDates(1L);
+        Thread.sleep(1000);
+        //캐싱된걸 호출
+        log.info("캐싱된 목록 조회 시작!");
+        Long startTime = System.currentTimeMillis();
+        concertService.getDates(1L);
+        Long endTime = System.currentTimeMillis();
+        log.info("캐싱된 목록 조회 끝!");
+        log.info("캐싱된 목록 조회 소요 시간: {}", (endTime - startTime) + "ms");
+
+        log.info("캐싱없는 목록 조회 시작!");
+        startTime = System.currentTimeMillis();
+        concertService.getDatesNoCacheForTest(1L);
+        endTime = System.currentTimeMillis();
+        log.info("캐싱없는 목록 조회 끝!");
+        log.info("캐싱없는 목록 조회 소요 시간: {}", (endTime - startTime) + "ms");
+    }
+
+    @Test
+    void 콘서트조회_캐싱처리_속도비교() throws Exception {
+        //캐싱을 위해 호출
+        concertService.getConcerts();
+        Thread.sleep(1000);
+
+        //캐싱된걸 호출
+        log.info("캐싱된 목록 조회 시작!");
+        Long startTime = System.currentTimeMillis();
+        concertService.getConcerts();
+        Long endTime = System.currentTimeMillis();
+        log.info("캐싱된 목록 조회 끝!");
+        log.info("캐싱된 목록 조회 소요 시간: {}", (endTime - startTime) + "ms");
+
+        log.info("캐싱없는 목록 조회 시작!");
+        startTime = System.currentTimeMillis();
+        concertService.getConcertsNoCacheForTest();
+        endTime = System.currentTimeMillis();
+        log.info("캐싱없는 목록 조회 끝!");
+        log.info("캐싱없는 목록 조회 소요 시간: {}", (endTime - startTime) + "ms");
     }
 }

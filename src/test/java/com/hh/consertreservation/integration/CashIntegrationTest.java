@@ -8,7 +8,6 @@ import com.hh.consertreservation.domain.cash.ReservationInfo;
 import com.hh.consertreservation.domain.cash.ReservationRepository;
 import com.hh.consertreservation.domain.cash.UserBalance;
 import com.hh.consertreservation.domain.concert.Seat;
-import com.hh.consertreservation.domain.waiting.Token;
 import com.hh.consertreservation.support.exception.TokenVerificationException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
@@ -94,13 +93,12 @@ public class CashIntegrationTest {
         Optional<Seat> tempSeat = concertFacade.reserve(scheduleId, seatId);
         Optional<UserBalance> beforeBalance = cashFacade.getUserBalance(userId);
         //테스트를 위한 토큰 발급
-        Optional<Token> token = tokenFacade.issued(userId, 500L);
-        String queueToken = token.get().getQueueToken();
+        String token = tokenFacade.issue(userId, 500L);
 
         PaymentFacadeRequestDto req = PaymentFacadeRequestDto.builder()
                 .userId(userId)
                 .scheduleId(scheduleId)
-                .token(queueToken)
+                .token(token)
                 .seatId(seatId)
                 .build();
 
@@ -129,7 +127,7 @@ public class CashIntegrationTest {
 
         //토큰은 만료되야함
         Exception tokenException = Assertions.assertThrows(TokenVerificationException.class,
-                () -> tokenFacade.verification(userId, queueToken));
+                () -> tokenFacade.verification(token));
         Assertions.assertEquals("토큰인증 실패", tokenException.getMessage());
     }
 }

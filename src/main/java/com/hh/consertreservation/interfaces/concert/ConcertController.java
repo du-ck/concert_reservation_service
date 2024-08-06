@@ -2,6 +2,7 @@ package com.hh.consertreservation.interfaces.concert;
 
 import com.hh.consertreservation.application.facade.ConcertFacade;
 import com.hh.consertreservation.application.facade.TokenFacade;
+import com.hh.consertreservation.domain.concert.ConcertTitle;
 import com.hh.consertreservation.interfaces.dto.ResponseData;
 import com.hh.consertreservation.domain.concert.Concert;
 import com.hh.consertreservation.domain.concert.ConcertSchedule;
@@ -21,7 +22,23 @@ import java.util.Optional;
 public class ConcertController {
 
     private final ConcertFacade concertFacade;
-    private final TokenFacade tokenFacade;
+
+    @GetMapping("/list")
+    @Operation(summary = "콘서트 목록 조회", description = "콘서트 목록을 조회한다.")
+    public ResponseEntity<ResponseData> concerts() {
+
+        List<ConcertTitle> concerts = concertFacade.getConcerts();
+
+        Concerts.Response response = Concerts.Response.builder()
+                .concerts(concerts)
+                .build();
+
+        return new ResponseEntity<>(ResponseData.builder()
+                .isSuccess(true)
+                .code("200")
+                .data(response)
+                .build(), HttpStatus.OK);
+    }
 
     /**
      * 콘서트 예약가능 날짜 조회 API

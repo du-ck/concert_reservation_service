@@ -13,8 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Optional;
-
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -43,14 +41,14 @@ class WaitingControllerTest {
                 .build();
         Token token = Token.builder().build();
         token.setMockData();
-        given(tokenFacade.issued(req.getUserId(), 500)).willReturn(Optional.of(token));
+        given(tokenFacade.issue(req.getUserId(), 500))
+                .willReturn("test:1");
 
         mockMvc.perform(post("/api/token/issued")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objMapper.writeValueAsString(req)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").exists())
-                .andExpect(jsonPath("$.data.userId").exists())
                 .andExpect(jsonPath("$.data.queueToken").exists());
     }
 }

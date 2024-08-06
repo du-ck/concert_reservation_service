@@ -19,7 +19,6 @@ public class TokenIssued {
     @Builder
     @Getter
     public static class Response {
-        private Long userId;
         private String queueToken;
     }
 }

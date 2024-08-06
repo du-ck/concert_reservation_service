@@ -47,7 +47,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         if (!StringUtils.hasText(userId)) {
             throw new IllegalArgumentException("userId가 없습니다");
         }
-        tokenFacade.verification(Long.parseLong(userId), token);
+        tokenFacade.verification(token);
 
         return true;
     }

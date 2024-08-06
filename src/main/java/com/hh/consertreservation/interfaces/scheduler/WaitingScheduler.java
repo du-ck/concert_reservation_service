@@ -13,21 +13,17 @@ public class WaitingScheduler {
 
     private final WaitingService waitingService;
 
-    public final static Long MAXIMUM_ONGOING_COUNT = 500L;  // 가용가능한 인원
+    public final static Long MAXIMUM_ONGOING_COUNT = 3000L;  // 가용가능한 인원
+    public final static int ACTIVE_COUNT = 50;  // 한번에 active 시킬 토큰의 개수
 
-    /**
-     * '짐작'하는 다음 대기열1순위의 token Id
-     * 처음 동작시 MAXIMUM_ONGOING_COUNT (가용가능인원 ) +1을 따라가며,
-     * expire() 가 돌때마다 실제 다음 waiting 1순위의 token Id 를 담는다.
-     *
-     * 프론트 단 에서는 발급받은 token의 id - nextOnGoingUserId 로 몇명이 앞에 남았는지
-     * 짐작이 가능해진다.
-     */
-    public static Long nextOnGoingTokenId = MAXIMUM_ONGOING_COUNT + 1L;  //
 
-    @Scheduled(fixedRate = 2000)
+    /*@Scheduled(fixedRate = 10000)
     public void tokenExpire() {
-        nextOnGoingTokenId = waitingService.expire(nextOnGoingTokenId);
-        /*log.info("Next OnGoing Expect Token ID : " + nextOnGoingUserId);*/
+        waitingService.expireWithRedis();
+    }*/
+
+    @Scheduled(fixedRate = 10000)
+    public void active() {
+        waitingService.active(ACTIVE_COUNT);
     }
 }

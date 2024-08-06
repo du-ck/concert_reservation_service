@@ -3,14 +3,8 @@ package com.hh.consertreservation.interfaces;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hh.consertreservation.application.facade.ConcertFacade;
 import com.hh.consertreservation.application.facade.TokenFacade;
-import com.hh.consertreservation.interfaces.concert.ConcertController;
-import com.hh.consertreservation.interfaces.concert.ConcertDates;
-import com.hh.consertreservation.interfaces.concert.ConcertSeats;
-import com.hh.consertreservation.interfaces.concert.Reservation;
-import com.hh.consertreservation.domain.concert.Concert;
-import com.hh.consertreservation.domain.concert.ConcertSchedule;
-import com.hh.consertreservation.domain.concert.Seat;
-import com.hh.consertreservation.domain.concert.ConcertService;
+import com.hh.consertreservation.domain.concert.*;
+import com.hh.consertreservation.interfaces.concert.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +39,33 @@ class ConcertControllerTest {
 
     @MockBean
     private TokenFacade tokenFacade;
+
+    @Test
+    void concerts() throws Exception {
+        List<ConcertTitle> concerts = new ArrayList<>();
+        concerts.add(ConcertTitle.builder()
+                .concertId(100L)
+                .title("짱구는 못말려 극장판 8기")
+                .build());
+        concerts.add(ConcertTitle.builder()
+                .concertId(200L)
+                .title("짱구는 못말려 극장판 9기")
+                .build());
+        concerts.add(ConcertTitle.builder()
+                .concertId(300L)
+                .title("짱구는 못말려 극장판 10기")
+                .build());
+        given(concertFacade.getConcerts())
+                .willReturn(concerts);
+
+        mockMvc.perform(get("/api/concert/list")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").exists())
+                .andExpect(jsonPath("$.data.concerts").exists())
+                .andExpect(jsonPath("$.data.concerts[*].concertId").exists())
+                .andExpect(jsonPath("$.data.concerts[*].title").exists());
+    }
 
     @Test
     void concertDates() throws Exception {

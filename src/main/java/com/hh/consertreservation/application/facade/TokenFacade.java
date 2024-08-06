@@ -1,13 +1,13 @@
 package com.hh.consertreservation.application.facade;
 
-import com.hh.consertreservation.domain.waiting.Token;
 import com.hh.consertreservation.domain.user.User;
 import com.hh.consertreservation.domain.user.UserService;
 import com.hh.consertreservation.domain.waiting.WaitingService;
 import com.hh.consertreservation.support.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -16,19 +16,29 @@ import java.util.Optional;
 public class TokenFacade {
     private final UserService userService;
     private final WaitingService waitingService;
+    private final RedissonClient redissonClient;
 
-    @Transactional
-    public Optional<Token> issued(long userId, long maximum_ongoing_count) throws Exception {
+
+    public String issue(long userId, long maximum_ongoing_count) throws Exception {
         Optional<User> user = userService.getUser(userId);
-        //Facade 에 로직이 있으면 안된다고 하셨는데..
-        //이런것도 로직에 포함되는건지...
         if (!user.isPresent()) {
             throw new ResourceNotFoundException("없는 사용자 입니다");
         }
-        return waitingService.issued(userId, maximum_ongoing_count);
+        RLock lock = redissonClient.getLock("tokenLock");
+        lock.lock();
+        try {
+            String issuedToken = waitingService.issue(userId, maximum_ongoing_count);
+            return issuedToken;
+        } finally {
+            lock.unlock();
+        }
     }
 
-    public boolean verification(long userId, String token) throws Exception {
-        return waitingService.verification(userId, token);
+    public boolean verification(String token) throws Exception {
+        return waitingService.verification(token);
+    }
+
+    public Optional<Long> getWaitingPosition(String token) {
+        return waitingService.getWaitingPosition(token);
     }
 }
