@@ -26,4 +26,9 @@ public class ReservationInfo {
         this.createdAt = LocalDateTime.now();
         this.status = ReservationType.RESERVED;
     }
+
+    @Override
+    public String toString() {
+        return String.format("reservationId : %s Status : %s", this.reservationId, this.status.toString());
+    }
 }
