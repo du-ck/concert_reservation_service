@@ -84,4 +84,22 @@ public class CashController {
                 .data(response)
                 .build(), HttpStatus.OK);
     }
+
+    /**
+     * 결제 전송
+     * @return
+     */
+    @PostMapping("/paymentSend")
+    public ResponseEntity<ResponseData> paymentSend(
+            @RequestBody Payment.Request req,
+            @RequestHeader("Queue-Token") String queueToken) throws Exception {
+
+        boolean result = cashFacade.paymentForSend(Payment.toServiceRequestDto(req, queueToken));
+
+        return new ResponseEntity<>(ResponseData.builder()
+                .isSuccess(true)
+                .code("200")
+                .data(result)
+                .build(), HttpStatus.OK);
+    }
 }
