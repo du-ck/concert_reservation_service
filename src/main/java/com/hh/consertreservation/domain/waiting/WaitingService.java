@@ -85,7 +85,7 @@ public class WaitingService {
     public Long expireAfterPayment(String token) throws Exception {
         boolean isExist = waitingRepository.existActiveToken(token);
         if (isExist) {
-            Optional<Long> expireTokenCount = waitingRepository.removeExpiredTokens(Collections.singletonList(token));
+            Optional<Long> expireTokenCount = waitingRepository.removeActiveToken(token);
             if (expireTokenCount.get() == 0) {
                 throw new TokenVerificationException("토큰만료 실패");
             }

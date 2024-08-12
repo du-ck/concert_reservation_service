@@ -44,7 +44,7 @@ public interface WaitingRepository {
     boolean existActiveToken(String token);
 
     /**
-     * 만료된 활성 토큰을 제거
+     * 결제 후 활성토큰 만료처리
      */
-    Optional<Long> removeExpiredTokens(List<String> expireTokens);
+    Optional<Long> removeActiveToken(String activeTokens);
 }

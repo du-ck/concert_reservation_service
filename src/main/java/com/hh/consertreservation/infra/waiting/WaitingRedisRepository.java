@@ -79,7 +79,10 @@ public class WaitingRedisRepository implements WaitingRepository {
     }
 
     @Override
-    public Optional<Long> removeExpiredTokens(List<String> expireTokens) {
-        return Optional.of(redisTemplate.opsForSet().remove(ACTIVE_TOKEN_KEY, expireTokens.toArray()));
+    public Optional<Long> removeActiveToken(String activeTokens) {
+        String key = String.format("%s:%s", ACTIVE_TOKEN_KEY, activeTokens);
+        String value = key.substring(key.lastIndexOf(":") + 1);
+
+        return Optional.of(redisTemplate.opsForSet().remove(key, value));
     }
 }
