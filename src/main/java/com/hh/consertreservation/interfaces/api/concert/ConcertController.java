@@ -1,9 +1,8 @@
-package com.hh.consertreservation.interfaces.concert;
+package com.hh.consertreservation.interfaces.api.concert;
 
 import com.hh.consertreservation.application.facade.ConcertFacade;
-import com.hh.consertreservation.application.facade.TokenFacade;
 import com.hh.consertreservation.domain.concert.ConcertTitle;
-import com.hh.consertreservation.interfaces.dto.ResponseData;
+import com.hh.consertreservation.interfaces.api.dto.ResponseData;
 import com.hh.consertreservation.domain.concert.Concert;
 import com.hh.consertreservation.domain.concert.ConcertSchedule;
 import com.hh.consertreservation.domain.concert.Seat;

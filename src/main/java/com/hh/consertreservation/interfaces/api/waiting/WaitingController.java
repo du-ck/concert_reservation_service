@@ -1,8 +1,8 @@
-package com.hh.consertreservation.interfaces.waiting;
+package com.hh.consertreservation.interfaces.api.waiting;
 
 import com.hh.consertreservation.application.facade.TokenFacade;
-import com.hh.consertreservation.interfaces.scheduler.WaitingScheduler;
-import com.hh.consertreservation.interfaces.dto.ResponseData;
+import com.hh.consertreservation.interfaces.api.dto.ResponseData;
+import com.hh.consertreservation.interfaces.api.scheduler.WaitingScheduler;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

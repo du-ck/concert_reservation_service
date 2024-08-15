@@ -1,4 +1,4 @@
-package com.hh.consertreservation.interfaces.dto;
+package com.hh.consertreservation.interfaces.api.dto;
 
 public record ErrorResponse(
         boolean isSuccess,

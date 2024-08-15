@@ -1,22 +1,22 @@
-package com.hh.consertreservation.interfaces.cash;
+package com.hh.consertreservation.interfaces.api.concert;
 
-import com.hh.consertreservation.domain.cash.UserBalance;
+import com.hh.consertreservation.domain.concert.Concert;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
-public class Balance {
+public class ConcertDates {
     @Setter
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     @Jacksonized
     public static class Request {
-        private Long userId;
+        private Long concertId;
     }
 
     @Builder
     @Getter
     public static class Response {
-        private UserBalance balance;
+        Concert concerts;
     }
 }

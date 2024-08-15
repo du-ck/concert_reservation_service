@@ -1,4 +1,4 @@
-package com.hh.consertreservation.interfaces.waiting;
+package com.hh.consertreservation.interfaces.api.waiting;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

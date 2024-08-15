@@ -1,9 +1,6 @@
 package com.hh.consertreservation.support.exception;
 
-import com.hh.consertreservation.interfaces.dto.ErrorResponse;
-import com.hh.consertreservation.support.exception.ResourceNotFoundException;
-import com.hh.consertreservation.support.exception.TokenIssuedException;
-import com.hh.consertreservation.support.exception.TokenVerificationException;
+import com.hh.consertreservation.interfaces.api.dto.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
