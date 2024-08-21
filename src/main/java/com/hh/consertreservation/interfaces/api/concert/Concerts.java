@@ -1,4 +1,4 @@
-package com.hh.consertreservation.interfaces.concert;
+package com.hh.consertreservation.interfaces.api.concert;
 
 import com.hh.consertreservation.domain.concert.Concert;
 import com.hh.consertreservation.domain.concert.ConcertTitle;

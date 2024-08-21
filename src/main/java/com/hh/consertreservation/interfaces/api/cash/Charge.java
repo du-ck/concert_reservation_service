@@ -1,4 +1,4 @@
-package com.hh.consertreservation.interfaces.cash;
+package com.hh.consertreservation.interfaces.api.cash;
 
 import com.hh.consertreservation.domain.cash.UserBalance;
 import lombok.*;

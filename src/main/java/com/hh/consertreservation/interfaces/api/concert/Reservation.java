@@ -1,24 +1,22 @@
-package com.hh.consertreservation.interfaces.concert;
+package com.hh.consertreservation.interfaces.api.concert;
 
 import com.hh.consertreservation.domain.concert.Seat;
 import lombok.*;
 
-import java.util.List;
-
-public class ConcertSeats {
+public class Reservation {
     @Setter
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Request {
+        private Long scheduleId;
         private Long userId;
-        private Long concertId;
-        private String concertDateTime;
+        private Long seatNumber;
     }
 
     @Builder
     @Getter
     public static class Response {
-        List<Seat> seats;
+        Seat seat;  //예약요청한 좌석 (임시배정)
     }
 }

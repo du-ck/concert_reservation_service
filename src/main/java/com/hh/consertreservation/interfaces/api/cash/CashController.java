@@ -1,8 +1,8 @@
-package com.hh.consertreservation.interfaces.cash;
+package com.hh.consertreservation.interfaces.api.cash;
 
 import com.hh.consertreservation.application.facade.CashFacade;
 import com.hh.consertreservation.application.facade.TokenFacade;
-import com.hh.consertreservation.interfaces.dto.ResponseData;
+import com.hh.consertreservation.interfaces.api.dto.ResponseData;
 import com.hh.consertreservation.domain.cash.ReservationInfo;
 import com.hh.consertreservation.domain.cash.UserBalance;
 import io.swagger.v3.oas.annotations.Operation;
@@ -94,7 +94,7 @@ public class CashController {
             @RequestBody Payment.Request req,
             @RequestHeader("Queue-Token") String queueToken) throws Exception {
 
-        boolean result = cashFacade.paymentForSend(Payment.toServiceRequestDto(req, queueToken));
+        boolean result = cashFacade.minutPointForPayment(Payment.toServiceRequestDto(req, queueToken));
 
         return new ResponseEntity<>(ResponseData.builder()
                 .isSuccess(true)

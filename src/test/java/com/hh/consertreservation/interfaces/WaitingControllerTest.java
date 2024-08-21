@@ -2,10 +2,10 @@ package com.hh.consertreservation.interfaces;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hh.consertreservation.application.facade.TokenFacade;
-import com.hh.consertreservation.interfaces.waiting.TokenIssued;
+import com.hh.consertreservation.interfaces.api.waiting.TokenIssued;
 import com.hh.consertreservation.domain.waiting.Token;
 import com.hh.consertreservation.domain.waiting.WaitingService;
-import com.hh.consertreservation.interfaces.waiting.WaitingController;
+import com.hh.consertreservation.interfaces.api.waiting.WaitingController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

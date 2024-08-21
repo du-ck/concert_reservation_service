@@ -1,4 +1,4 @@
-package com.hh.consertreservation.interfaces.scheduler;
+package com.hh.consertreservation.interfaces.api.scheduler;
 
 import com.hh.consertreservation.domain.concert.ConcertService;
 import lombok.RequiredArgsConstructor;

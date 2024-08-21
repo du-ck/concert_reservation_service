@@ -1,4 +1,4 @@
-package com.hh.consertreservation.interfaces.dto;
+package com.hh.consertreservation.interfaces.api.dto;
 
 import lombok.Builder;
 import lombok.Data;
