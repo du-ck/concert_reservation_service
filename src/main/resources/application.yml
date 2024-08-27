@@ -27,7 +27,7 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
-    url: jdbc:h2:./data;NON_KEYWORDS=USER
+    url: jdbc:h2:./data;NON_KEYWORDS=USER;LOCK_TIMEOUT=10000
   jpa:
     properties:
       hibernate:
