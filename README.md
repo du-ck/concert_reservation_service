@@ -15,3 +15,14 @@ IntelliJ, Git
 
 ### Development
 Java, Spring Boot, Redis, Kafka, Docker
+##
+
+## 기능
+- 대기열 토큰 발급
+- 잔액 조회
+- 잔액 충전
+- 콘서트 조회
+- 콘서트 날짜 조회
+- 콘서트 예약 가능 좌석 조회
+- 콘서트 예약
+- 결제
