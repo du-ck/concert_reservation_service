@@ -14,7 +14,7 @@
 IntelliJ, Git
 
 ### Development
-Java, Spring Boot, Redis, Kafka, Docker
+Java, Spring Boot, JPA, Redis, Kafka, Docker
 ##
 
 ## 기능
